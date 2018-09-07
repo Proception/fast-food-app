@@ -1,0 +1,44 @@
+{
+  "name": "fast-food-app",
+  "version": "1.0.0",
+  "description": "A fast food app that allows users to make food orders online",
+  "main": "app.js",
+  "scripts": {
+    "lint": "./node_modules/.bin/eslint .",
+    "lintfix": "./node_modules/.bin/eslint . --fix",
+    "start": "node app.js",
+    "babelstart": "babel-node app.js --presets es2015",
+    "test": "mocha --compilers js:babel-core/register"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Proception/fast-food-app.git"
+  },
+  "keywords": [
+    "order",
+    "food",
+    "online"
+  ],
+  "author": "Benedict Esimaje",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Proception/fast-food-app/issues"
+  },
+  "homepage": "https://github.com/Proception/fast-food-app#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "eslint-config-airbnb": "^17.1.0",
+    "express": "^4.16.3",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "chai": "^4.1.2",
+    "eslint": "^5.5.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "mocha": "^5.2.0",
+    "supertest": "^3.2.0"
+  }
+}
