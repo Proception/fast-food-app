@@ -8,7 +8,6 @@ after_success:
   - "npm install babel-core babel-preset-es2015 mocha nyc"
   - "npm run testcover"
 before_script:
-  - yarn global add nyc
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
