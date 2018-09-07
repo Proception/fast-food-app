@@ -9,7 +9,7 @@
     "start": "node app.js",
     "babelstart": "babel-node app.js --presets es2015",
     "test": "mocha --compilers js:babel-core/register --exit",
-    "testcover": "nyc --require babel-core/register mocha test --exit"
+    "testcover": "nyc --reporter=lcov --reporter=text-lcov --require babel-core/register mocha test --exit"
   },
   "repository": {
     "type": "git",
