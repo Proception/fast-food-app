@@ -22,7 +22,7 @@ describe('POST /orders', () => {
   it('saves a new order', (done) => {
     request.post('/api/v1/orders')
       .send({
-        orderNo: 2323,
+        orderNo: '2323',
         orderDate: '12/13/2020',
         orderAmount: 900000,
         orderStatus: 'accepted',
