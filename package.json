@@ -8,7 +8,8 @@
     "lintfix": "./node_modules/.bin/eslint . --fix",
     "start": "node app.js",
     "babelstart": "babel-node app.js --presets es2015",
-    "test": "mocha --compilers js:babel-core/register --exit"
+    "test": "mocha --compilers js:babel-core/register --exit",
+    "testcover": "nyc --require babel-core/register mocha test --exit"
   },
   "repository": {
     "type": "git",
@@ -39,6 +40,7 @@
     "eslint": "^5.5.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",
+    "istanbul": "^0.4.5",
     "mocha": "^5.2.0",
     "mocha-lcov-reporter": "^1.3.0",
     "supertest": "^3.2.0"
