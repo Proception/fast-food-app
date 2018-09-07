@@ -14,7 +14,7 @@ before_script:
   - ./cc-test-reporter before-build
 
 script:
-  - nyc --reporter=lcov npm test
+  - nyc report --reporter=lcov --require babel-core/register npm test --exit
 
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
