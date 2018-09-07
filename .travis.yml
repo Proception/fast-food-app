@@ -5,4 +5,5 @@ cache:
   directories:
     - "node_modules"
 after_success: 
+  - "npm install babel-core babel-preset-es2015 mocha nyc"
   - "npm run testcover"
