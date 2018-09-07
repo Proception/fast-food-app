@@ -9,7 +9,6 @@
     "start": "node app.js",
     "babelstart": "babel-node app.js --presets es2015",
     "test": "mocha --compilers js:babel-core/register --exit",
-    "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls"
   },
   "repository": {
     "type": "git",
