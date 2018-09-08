@@ -9,6 +9,7 @@
     "start": "babel-node app.js --presets es2015",
     "test": "mocha --compilers js:babel-core/register --exit",
     "testcover": "nyc  --require babel-core/register mocha test --exit",
+    "testinst": "cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text mocha test/*.js",
     "newtest": "nyc report --reporter=lcov --require babel-core/register npm test"
   },
   "repository": {
@@ -35,6 +36,7 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
+    "babel-plugin-istanbul": "^5.0.1",
     "babel-preset-es2015": "^6.24.1",
     "chai": "^4.1.2",
     "coveralls": "^3.0.2",
@@ -48,6 +50,10 @@
     "supertest": "^3.2.0"
   },
   "engines": {
-      "node": "8.11.4"
-  }
+    "node": "8.11.4"
+  },
+  "nyc": {
+    "sourceMap": false,
+    "instrument": false
+  },
 }
