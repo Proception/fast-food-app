@@ -20,6 +20,7 @@ script:
   # - nyc report --reporter=lcov --require babel-core/register npm test --exit
 
 after_script:
+  - NODE_ENV=test istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverag
   - ./cc-test-reporter after-build --debug -t lcov --exit-code $TRAVIS_TEST_RESULT
 
 notifications:
