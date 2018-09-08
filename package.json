@@ -10,7 +10,8 @@
     "testnorm": "mocha --compilers js:babel-core/register --exit",
     "testcover": "nyc  --require babel-core/register mocha test --exit",
     "test": "cross-env NODE_ENV=nyc --reporter=lcov --reporter=text mocha test/*.js",
-    "newtest": "nyc report --reporter=lcov --require babel-core/register npm test"
+    "newtest": "nyc report --reporter=lcov --require babel-core/register npm test",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
