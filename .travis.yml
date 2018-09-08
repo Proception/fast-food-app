@@ -20,7 +20,7 @@ script:
   - nyc report --reporter=lcov --require babel-core/register npm test --exit
 
 after_script:
-  - ./cc-test-reporter after-build --exit-code 0
+  - ./cc-test-reporter after-build --debug -t lcov --exit-code 0
 
 notifications:
   email: false
