@@ -16,7 +16,7 @@ before_script:
   - ./cc-test-reporter before-build
 
 script:
-  - npm run testcover:coverage
+  - npm run testcover
   # - nyc report --reporter=lcov --require babel-core/register npm test --exit
 
 after_script:
