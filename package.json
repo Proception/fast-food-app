@@ -53,7 +53,7 @@
     "node": "8.11.4"
   },
   "nyc": {
-    "sourceMap": false,
-    "instrument": false
-  },
+    "sourceMap": "false",
+    "instrument": "false"
+  }
 }
