@@ -6,8 +6,7 @@
   "scripts": {
     "lint": "./node_modules/.bin/eslint .",
     "lintfix": "./node_modules/.bin/eslint . --fix",
-    "start": "node app.js",
-    "babelstart": "babel-node app.js --presets es2015",
+    "start": "babel-node app.js --presets es2015",
     "test": "mocha --compilers js:babel-core/register --exit",
     "testcover": "nyc  --require babel-core/register mocha test --exit",
     "newtest": "nyc report --reporter=lcov --require babel-core/register npm test"

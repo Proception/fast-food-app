@@ -1,3 +1,6 @@
+env:
+  global:
+    - CC_TEST_REPORTER_ID=9b22cf1db3e49bf488c74c187c8103b2bdb98b9947cee0efd018d6efbbf756ea
 language: node_js
 node_js:
   - "stable"
@@ -8,16 +11,16 @@ after_success:
   - "npm install babel-core babel-preset-es2015 mocha nyc"
   - "npm run testcover"
 before_script:
-  - "npm install babel-core babel-preset-es2015 mocha nyc"
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
 
 script:
-  - nyc report --reporter=lcov --require babel-core/register npm test --exit
+  - npm run testcover
+  # - nyc report --reporter=lcov --require babel-core/register npm test --exit
 
 after_script:
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+  - ./cc-test-reporter after-build --debug -t lcov --exit-code $TRAVIS_TEST_RESULT
 
 notifications:
   email: false

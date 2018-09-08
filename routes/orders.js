@@ -4,7 +4,7 @@ import * as orderController from '../controllers/orderController';
 const express = require('express');
 
 const router = express.Router();
-console.log('order router');
+// console.log('order router');
 
 
 // GET request for returning all orders
@@ -19,10 +19,7 @@ router.post('/', orderController.createOrder);
 // PUT request for returning all orders
 router.put('/:id', orderController.updateOrder);
 
-// GET request for returning all orders
-// router.delete('/:id', orderController.removeOrder);
+// DELETE request to Delete order by ID
+router.delete('/:id', orderController.deleteOrder);
 
-// exports a function declared earlier
-// export { router };
-// export default class {}
 export default router;
