@@ -9,7 +9,7 @@ app.use('/api/v1/orders', ordersRouter);
 
 
 app.listen(process.env.PORT || 3000, () => {
-  console.log('Example app listening on port 8000!');
+  // console.log('Example app listening on port 3000!');
 });
 
 // exports a function declared earlier
