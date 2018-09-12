@@ -7,11 +7,10 @@
     "lint": "./node_modules/.bin/eslint .",
     "lintfix": "./node_modules/.bin/eslint . --fix",
     "start": "babel-node app.js --presets es2015",
-    "testnorm": "mocha --compilers js:babel-core/register --exit",
+    "testdd": "mocha --compilers js:babel-core/register --exit",
+    "test": "nyc report --reporter=text-lcov | coveralls",
     "testcover": "nyc  --require babel-core/register mocha test --exit",
-    "test": "nyc --require babel-core/register --reporter=html --reporter=text _mocha --exit",
-    "newtest": "nyc report --reporter=lcov --require babel-core/register npm test",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
+    "newtest": "nyc report --reporter=lcov --require babel-core/register npm test"
   },
   "repository": {
     "type": "git",
@@ -37,7 +36,6 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
-    "babel-plugin-istanbul": "^5.0.1",
     "babel-preset-es2015": "^6.24.1",
     "chai": "^4.1.2",
     "coveralls": "^3.0.2",
@@ -52,9 +50,5 @@
   },
   "engines": {
     "node": "8.11.4"
-  },
-  "nyc": {
-    "sourceMap": "false",
-    "instrument": "false"
   }
 }
