@@ -9,7 +9,7 @@
     "start": "babel-node app.js --presets es2015",
     "testdd": "mocha --compilers js:babel-core/register --exit",
     "testsss": "nyc report --reporter=text-lcov | coveralls",
-    "test": "nyc report --reporter=text-lcov --require babel-core/register _mocha --report lcovonly test | coveralls --exit",
+    "test": "nyc report --reporter=text-lcov --require babel-core/register _mocha --report lcovonly test --exit",
     "newtest": "nyc report --reporter=lcov --require babel-core/register npm test",
     "ddd": "nyc --require babel-core/register _mocha --exit"
 
