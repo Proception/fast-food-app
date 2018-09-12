@@ -8,9 +8,11 @@ cache:
   directories:
     - "node_modules"
 after_success: 
+  - NODE_ENV=test istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
+  - "npm test"
   # - "npm install babel-core babel-preset-es2015 mocha nyc"
   # - "npm run testcover"
-  - "npm run coverage"
+  # - "npm run coverage"
 # before_script:
 #   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
 #   - chmod +x ./cc-test-reporter
