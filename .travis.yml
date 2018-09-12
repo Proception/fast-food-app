@@ -22,7 +22,7 @@ before_script:
 script:
   - npm test
   # - nyc report --reporter=lcov --require babel-core/register npm test --exit
-  - nyc report --reporter=lcov --require babel-core/register _mocha test
+  - nyc report --reporter=lcov 
 
 after_script:
   # - nyc --reporter=lcov --reporter=text mocha test/*.js
