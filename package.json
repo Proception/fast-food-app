@@ -7,7 +7,8 @@
     "lint": "./node_modules/.bin/eslint .",
     "lintfix": "./node_modules/.bin/eslint . --fix",
     "start": "babel-node app.js --presets es2015",
-    "test": "mocha --compilers js:babel-core/register --exit",
+    "testdd": "mocha --compilers js:babel-core/register --exit",
+    "test": "nyc report --reporter=text-lcov | coveralls",
     "testcover": "nyc  --require babel-core/register mocha test --exit",
     "newtest": "nyc report --reporter=lcov --require babel-core/register npm test"
   },
@@ -48,6 +49,6 @@
     "supertest": "^3.2.0"
   },
   "engines": {
-      "node": "8.11.4"
+    "node": "8.11.4"
   }
 }
