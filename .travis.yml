@@ -31,7 +31,7 @@ after_script:
   # - NODE_ENV=istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverag
   # - ./cc-test-reporter after-build --debug format-coverage -t lcov upload-coverage --exit-code $TRAVIS_TEST_RESULT
   - ./cc-test-reporter format-coverage -t lcov .coverage/lcov.info
-  - ./cc-test-reporter upload-coverage --exit-code $TRAVIS_TEST_RESULT
+  - ./cc-test-reporter upload-coverage $TRAVIS_TEST_RESULT
 
 notifications:
   email: false
