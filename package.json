@@ -7,13 +7,8 @@
     "lint": "./node_modules/.bin/eslint .",
     "lintfix": "./node_modules/.bin/eslint . --fix",
     "start": "babel-node app.js --presets es2015",
-    "testdd": "mocha --compilers js:babel-core/register --exit",
-    "testcov": "nyc report --reporter=text-lcov | coveralls",
-    "test": "nyc report --reporter=lcov | coveralls",
-    "testcovnext": "nyc report --reporter=text-lcov --require babel-core/register _mocha --report lcovonly test > ./node_modules/coveralls/bin/coveralls.js --exit",
-    "newtest": "nyc report --reporter=lcov --require babel-core/register npm test",
-    "ddd": "nyc --require babel-core/register _mocha --exit"
-
+    "test": "_mocha --compilers js:babel-core/register --exit",
+    "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
