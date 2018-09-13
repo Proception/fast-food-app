@@ -8,6 +8,7 @@
     "lintfix": "./node_modules/.bin/eslint . --fix",
     "start": "babel-node app.js --presets es2015",
     "test": "_mocha --compilers js:babel-core/register --exit",
+    "cc-coverage": "nyc report --reporter=lcov",
     "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
