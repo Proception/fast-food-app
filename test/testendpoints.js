@@ -60,3 +60,14 @@ describe('PUT /orders', () => {
       });
   });
 });
+
+// Testing the Delete a single order based on Id expecting status 201 of success
+describe('DELETE /orders', () => {
+  it('Delete an existing order', (done) => {
+    request.delete('/api/v1/orders/12245')
+      .expect(201)
+      .end((err) => {
+        done(err);
+      });
+  });
+});
