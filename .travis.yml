@@ -20,14 +20,15 @@ before_script:
   - ./cc-test-reporter before-build
 
 script:
-  - npm test
+  # - npm test
   # - nyc report --reporter=lcov --require babel-core/register npm test --exit
-  - nyc report --reporter=lcov > ./node_modules/coveralls/bin/coveralls.js
+  # - nyc report --reporter=lcov > ./node_modules/coveralls/bin/coveralls.js
+  - nyc report --reporter=lcov | coveralls
 
 after_script:
   # - nyc --reporter=lcov --reporter=text mocha test/*.js
   # - NODE_ENV=istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverag
-  - ./cc-test-reporter after-build --debug -t lcov --exit-code $TRAVIS_TEST_RESULT
+  # - ./cc-test-reporter after-build --debug -t lcov --exit-code $TRAVIS_TEST_RESULT
 
 notifications:
   email: false
