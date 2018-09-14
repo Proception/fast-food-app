@@ -42,8 +42,9 @@ function getOrder(req, res) {
   const orderFound = mapOrderList.get(id);
 
   // console.log('Found : ', orderFound);
+  const status = (orderFound === undefined) ? 204 : 200;
 
-  res.status(200).send(orderFound);
+  res.status(status).send(orderFound);
 }
 
 // Update Order by Id
@@ -54,23 +55,23 @@ function updateOrder(req, res) {
 
   const orderFound = mapOrderList.get(id);
 
-  // console.log('Found : ', orderFound);
+  const status = (orderFound === undefined) ? 204 : 201;
 
   // Set status
-  orderFound.orderStatus = orderStatus;
+  if (status === 201) {
+    orderFound.orderStatus = orderStatus;
+  }
 
-  // console.log('Order Updated : ', orderFound);
-
-  res.status(201).end();
+  res.status(status).end();
 }
 
 // delete Order by Id
 function deleteOrder(req, res) {
   const { id } = req.params;
 
-  mapOrderList.delete(id);
+  const status = mapOrderList.delete(id) ? 201 : 204;
 
-  res.status(201).end();
+  res.status(status).end();
 }
 
 
