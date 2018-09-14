@@ -1,10 +1,11 @@
 import { describe, it } from 'mocha';
-// import chai from 'chai';
+import chai from 'chai';
 import supertest from 'supertest';
 import app from '../app';
+import { jsonIsEmpty as validate } from '../utils/validate';
 
 const request = supertest(app);
-// const { expect } = chai;
+const { expect } = chai;
 
 // In this test it's expected an order list
 describe('GET /orders', () => {
@@ -46,6 +47,17 @@ describe('GET /orders', () => {
   });
 });
 
+// Testing the GET a single order based on Id expecting status 204 if order doesnt exist
+describe('GET /orders', () => {
+  it('gets an order based on ID(Order doesn exist)', (done) => {
+    request.get('/api/v1/orders/12245323')
+      .expect(204)
+      .end((err) => {
+        done(err);
+      });
+  });
+});
+
 
 // Testing the Update a single order based on Id expecting status 201 of success
 describe('PUT /orders', () => {
@@ -61,6 +73,20 @@ describe('PUT /orders', () => {
   });
 });
 
+// Testing the Update a single order based on Id expecting status 204 if item doesnt exist
+describe('PUT /orders', () => {
+  it('Updates Status of an existing order (Order doesnt exist)', (done) => {
+    request.put('/api/v1/orders/1224512122')
+      .send({
+        orderStatus: 'accepted',
+      })
+      .expect(204)
+      .end((err) => {
+        done(err);
+      });
+  });
+});
+
 // Testing the Delete a single order based on Id expecting status 201 of success
 describe('DELETE /orders', () => {
   it('Delete an existing order', (done) => {
@@ -69,5 +95,34 @@ describe('DELETE /orders', () => {
       .end((err) => {
         done(err);
       });
+  });
+});
+
+// Testing the Delete a single order based on Id expecting status 204 if item doesnt exist
+describe('DELETE /orders', () => {
+  it('Delete an existing order (Order doesnt exist)', (done) => {
+    request.delete('/api/v1/orders/1224532322')
+      .expect(204)
+      .end((err) => {
+        done(err);
+      });
+  });
+});
+
+// Testing validate function
+describe('validate JSON', () => {
+  it('Returns True if JSON is empty', (done) => {
+    expect(validate({})).to.equal(true);
+    done();
+  });
+
+  it('Returns True if invalid value is entered', (done) => {
+    expect(validate('dsdssasa')).to.equal(true);
+    done();
+  });
+
+  it('Returns false if JSON is NOT empty', (done) => {
+    expect(validate({ name: 'ben' })).to.equal(false);
+    done();
   });
 });
