@@ -77,7 +77,10 @@ describe('PUT /users', () => {
   it('Updates details of an existing user', (done) => {
     request.put('/api/v1/users/omasan.esimaje@gmail.com')
       .send({
-        fullName: 'New Full Name',
+        email: 'oma.esimaje@gmail.com',
+        fullName: 'Benedict Esimaje',
+        phoneNo: '07062257273',
+        password: 'mypassword',
       })
       .expect(201)
       .end((err) => {
@@ -91,7 +94,10 @@ describe('PUT /users', () => {
   it('Updates details of an existing user (User doesnt exist)', (done) => {
     request.put('/api/v1/users/omasan.esimaje@gma')
       .send({
-        fullName: 'New Full Name',
+        email: 'omas.esimaje@gmail.com',
+        fullName: 'Benedict Esimaje',
+        phoneNo: '07062257273',
+        password: 'mypassword',
       })
       .expect(204)
       .end((err) => {
@@ -100,33 +106,33 @@ describe('PUT /users', () => {
   });
 });
 
-// Testing the Update a single user based on email expecting status 204 if user doesnt exist
-describe('PUT /users', () => {
-  it('Updates details of an existing user (Object is updating phone)', (done) => {
-    request.put('/api/v1/users/omasan.esimaje@gmail.com')
-      .send({
-        phoneNo: '07062257273',
-      })
-      .expect(201)
-      .end((err) => {
-        done(err);
-      });
-  });
-});
+// // Testing the Update a single user based on email expecting status 204 if user doesnt exist
+// describe('PUT /users', () => {
+//   it('Updates details of an existing user (Object is updating phone)', (done) => {
+//     request.put('/api/v1/users/omasan.esimaje@gmail.com')
+//       .send({
+//         phoneNo: '07062257273',
+//       })
+//       .expect(201)
+//       .end((err) => {
+//         done(err);
+//       });
+//   });
+// });
 
-// Testing the Update a single user based on email expecting status 204 if user doesnt exist
-describe('PUT /users', () => {
-  it('Updates details of an existing user (Object is updating password)', (done) => {
-    request.put('/api/v1/users/omasan.esimaje@gmail.com')
-      .send({
-        password: 'mypassword',
-      })
-      .expect(201)
-      .end((err) => {
-        done(err);
-      });
-  });
-});
+// // Testing the Update a single user based on email expecting status 204 if user doesnt exist
+// describe('PUT /users', () => {
+//   it('Updates details of an existing user (Object is updating password)', (done) => {
+//     request.put('/api/v1/users/omasan.esimaje@gmail.com')
+//       .send({
+//         password: 'mypassword',
+//       })
+//       .expect(201)
+//       .end((err) => {
+//         done(err);
+//       });
+//   });
+// });
 
 // Testing the Delete a single user based on email expecting status 201 of success
 describe('DELETE /users', () => {

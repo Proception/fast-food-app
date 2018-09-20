@@ -46,19 +46,24 @@ function getUser(req, res) {
 // Update User by email
 function updateUser(req, res) {
   const { email } = req.params;
-
   // Get params in body
   const { phoneNo } = req.body;
   const { fullName } = req.body;
   const { password } = req.body;
 
-  const userFound = mapUserList.get(email);
+  const updatedData = new User(email, fullName,
+    phoneNo, password);
+
+  let userFound = mapUserList.get(email);
   const status = (userFound === undefined) ? 204 : 201;
-  // Set status
+
+  // Set user
   if (status === 201) {
-    userFound.phoneNo = (phoneNo === undefined) ? userFound.phoneNo : phoneNo;
-    userFound.fullName = (fullName === undefined) ? userFound.fullName : fullName;
-    userFound.password = (password === undefined) ? userFound.password : password;
+    userFound = updatedData;
+    // userFound.phoneNo = (phoneNo === undefined) ? userFound.phoneNo : phoneNo;
+    // userFound.fullName = (fullName === undefined) ? userFound.fullName : fullName;
+    // userFound.password = (password === undefined) ? userFound.password : password;
+    mapUserList.set(userFound.email, userFound);
   }
   res.status(status).end();
 }
