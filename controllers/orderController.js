@@ -18,32 +18,25 @@ function getOrderList(req, res) {
 
 // Create New Order.
 function createOrder(req, res) {
-  // console.log('old order List Size: ', orderList.length);
-
   // Get POST params
   const json = req.body;
 
   const newOrder = new Order(json.orderId, json.orderDate,
     json.orderAmount, json.orderStatus,
     json.shippingAddress);
-
   // Populate List in Memory if object is not empty
   if (!(validate(newOrder))) {
     mapOrderList.set(newOrder.orderId, newOrder);
   }
-
   res.status(201).end();
 }
 
 // Get single Order by Id
 function getOrder(req, res) {
   const { id } = req.params;
-
   const orderFound = mapOrderList.get(id);
-
   // console.log('Found : ', orderFound);
   const status = (orderFound === undefined) ? 204 : 200;
-
   res.status(status).send(orderFound);
 }
 
@@ -52,29 +45,21 @@ function updateOrder(req, res) {
   const { id } = req.params;
   // Get params in body
   const { orderStatus } = req.body;
-
   const orderFound = mapOrderList.get(id);
-
   const status = (orderFound === undefined) ? 204 : 201;
-
   // Set status
   if (status === 201) {
     orderFound.orderStatus = orderStatus;
   }
-
   res.status(status).end();
 }
 
 // delete Order by Id
 function deleteOrder(req, res) {
   const { id } = req.params;
-
   const status = mapOrderList.delete(id) ? 201 : 204;
-
   res.status(status).end();
 }
-
-
 // exports a function declared earlier
 export {
   getOrderList, createOrder, getOrder, updateOrder, deleteOrder,
