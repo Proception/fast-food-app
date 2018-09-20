@@ -32,6 +32,23 @@ describe('POST /users', () => {
   });
 });
 
+// Testing the save User expecting status 201 of success
+describe('POST /users', () => {
+  it('Creates a new user(if user does not exist)', (done) => {
+    request.post('/api/v1/users')
+      .send({
+        email: 'oma.esimaje@gmail.com',
+        fullName: 'Benedict Esimaje',
+        phoneNo: '07062257273',
+        password: 'mypassword',
+      })
+      .expect(204)
+      .end((err) => {
+        done(err);
+      });
+  });
+});
+
 // Testing the GET a single user based on email expecting status 201 of success
 describe('GET /users', () => {
   it('gets a user based on Email', (done) => {
@@ -77,6 +94,34 @@ describe('PUT /users', () => {
         fullName: 'New Full Name',
       })
       .expect(204)
+      .end((err) => {
+        done(err);
+      });
+  });
+});
+
+// Testing the Update a single user based on email expecting status 204 if user doesnt exist
+describe('PUT /users', () => {
+  it('Updates details of an existing user (Object is updating phone)', (done) => {
+    request.put('/api/v1/users/omasan.esimaje@gmail.com')
+      .send({
+        phoneNo: '07062257273',
+      })
+      .expect(201)
+      .end((err) => {
+        done(err);
+      });
+  });
+});
+
+// Testing the Update a single user based on email expecting status 204 if user doesnt exist
+describe('PUT /users', () => {
+  it('Updates details of an existing user (Object is updating password)', (done) => {
+    request.put('/api/v1/users/omasan.esimaje@gmail.com')
+      .send({
+        password: 'mypassword',
+      })
+      .expect(201)
       .end((err) => {
         done(err);
       });

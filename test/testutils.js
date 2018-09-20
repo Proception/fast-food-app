@@ -25,4 +25,8 @@ describe('validate JSON', () => {
     expect(validate({ name: 'ben' })).to.equal(false);
     done();
   });
+  it('Returns True if array is entered', (done) => {
+    expect(validate('{a: 1}')).to.equal(true);
+    done();
+  });
 });

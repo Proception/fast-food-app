@@ -33,6 +33,18 @@ describe('POST /orders', () => {
   });
 });
 
+// Testing the save Order expecting status 201 of success
+describe('POST /orders', () => {
+  it('saves a new order(Empty order)', (done) => {
+    request.post('/api/v1/orders')
+      .send({})
+      .expect(204)
+      .end((err) => {
+        done(err);
+      });
+  });
+});
+
 // Testing the GET a single order based on Id expecting status 201 of success
 describe('GET /orders', () => {
   it('gets an order based on ID', (done) => {
