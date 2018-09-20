@@ -1,11 +1,8 @@
 import { describe, it } from 'mocha';
-import chai from 'chai';
 import supertest from 'supertest';
 import app from '../app';
-import { jsonIsEmpty as validate } from '../utils/validate';
 
 const request = supertest(app);
-const { expect } = chai;
 
 // In this test it's expected an order list
 describe('GET /orders', () => {
@@ -30,6 +27,18 @@ describe('POST /orders', () => {
         shippingAddress: '16, ayoade str, shomolu',
       })
       .expect(201)
+      .end((err) => {
+        done(err);
+      });
+  });
+});
+
+// Testing the save Order expecting status 201 of success
+describe('POST /orders', () => {
+  it('saves a new order(Empty order)', (done) => {
+    request.post('/api/v1/orders')
+      .send({})
+      .expect(204)
       .end((err) => {
         done(err);
       });
@@ -106,23 +115,5 @@ describe('DELETE /orders', () => {
       .end((err) => {
         done(err);
       });
-  });
-});
-
-// Testing validate function
-describe('validate JSON', () => {
-  it('Returns True if JSON is empty', (done) => {
-    expect(validate({})).to.equal(true);
-    done();
-  });
-
-  it('Returns True if invalid value is entered', (done) => {
-    expect(validate('dsdssasa')).to.equal(true);
-    done();
-  });
-
-  it('Returns false if JSON is NOT empty', (done) => {
-    expect(validate({ name: 'ben' })).to.equal(false);
-    done();
   });
 });
