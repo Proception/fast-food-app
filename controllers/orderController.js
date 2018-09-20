@@ -62,7 +62,7 @@ function updateOrder(req, res) {
 // delete Order by Id
 function deleteOrder(req, res) {
   const { id } = req.params;
-  const status = mapOrderList.delete(id) ? 201 : 204;
+  const status = (mapOrderList.delete(id)) ? 201 : 204;
   res.status(status).end();
 }
 // exports a function declared earlier

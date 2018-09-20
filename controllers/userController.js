@@ -48,9 +48,9 @@ function updateUser(req, res) {
   const { email } = req.params;
 
   // Get params in body
-  const { phoneNo, fullName, password } = req.body;
-  // const { fullName } = req.body;
-  // const { password } = req.body;
+  const { phoneNo } = req.body;
+  const { fullName } = req.body;
+  const { password } = req.body;
 
   const userFound = mapUserList.get(email);
   const status = (userFound === undefined) ? 204 : 201;
@@ -66,7 +66,7 @@ function updateUser(req, res) {
 // delete User by email
 function deleteUser(req, res) {
   const { email } = req.params;
-  const status = mapUserList.delete(email) ? 201 : 204;
+  const status = (mapUserList.delete(email)) ? 201 : 204;
   res.status(status).end();
 }
 // exports a function declared earlier
