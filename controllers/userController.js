@@ -54,11 +54,14 @@ function updateUser(req, res) {
 
   const userFound = mapUserList.get(email);
   const status = (userFound === undefined) ? 204 : 201;
-  // Set status
+
+  userFound.phoneNo = (phoneNo === undefined) ? userFound.phoneNo : phoneNo;
+  userFound.fullName = (fullName === undefined) ? userFound.fullName : fullName;
+  userFound.password = (password === undefined) ? userFound.password : password;
+  
+  // Set user
   if (status === 201) {
-    userFound.phoneNo = (phoneNo === undefined) ? userFound.phoneNo : phoneNo;
-    userFound.fullName = (fullName === undefined) ? userFound.fullName : fullName;
-    userFound.password = (password === undefined) ? userFound.password : password;
+    mapUserList.set(userFound.email, userFound);
   }
   res.status(status).end();
 }
