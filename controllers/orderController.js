@@ -20,15 +20,20 @@ function getOrderList(req, res) {
 function createOrder(req, res) {
   // Get POST params
   const json = req.body;
+  let status;
 
-  const newOrder = new Order(json.orderId, json.orderDate,
-    json.orderAmount, json.orderStatus,
-    json.shippingAddress);
+
   // Populate List in Memory if object is not empty
-  if (!(validate(newOrder))) {
+  if (!(validate(json))) {
+    const newOrder = new Order(json.orderId, json.orderDate,
+      json.orderAmount, json.orderStatus,
+      json.shippingAddress);
     mapOrderList.set(newOrder.orderId, newOrder);
+    status = 201;
+  } else {
+    status = 204;
   }
-  res.status(201).end();
+  res.status(status).end();
 }
 
 // Get single Order by Id
