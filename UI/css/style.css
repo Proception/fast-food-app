@@ -30,6 +30,14 @@ label{
 	width: 100%;
 }
 
+.button_1 {
+	height: 35px;
+	background: #3d70b2;
+	color:#ffffff;
+	border: 0;
+	padding-right: 40px;
+	padding-left: 40px;
+}
 
 
 
@@ -165,6 +173,11 @@ footer {
 	color: #ffffff;
 	background-color: #3d70b2;
 	text-align: center;
+	width: auto;
+	position: relative;
+	overflow: hidden;
+	bottom: 0;
+	float: bottom;
 }
 
 
@@ -384,8 +397,36 @@ footer {
 	#showcase h1 {
 		font-size: 35px;
 	}
+
+	/*Orders*/
+	.new-order .order-details {
+		float: none;
+		width: 80%;
+	/*	padding: 10px;
+		margin: 3px;*/
+	}
+	.new-order .order-commands {
+		float: none;
+		width: 80%;
+		text-align: center;
+	/*	padding: 10px;
+		margin: 3px;*/
+	}
+
+	.new-order .order-commands p {
+		text-align: center;
+		padding: 10px;
+		margin: 3px;
+	}
+
+	/* header*/
 	header{
 		padding-bottom: 20px;
+	}
+	header nav {
+		float: none;
+		text-align: center;
+		/*margin-top: 10px;*/
 	}
 
 	#showcase button{
@@ -398,7 +439,60 @@ footer {
 	}
 
 	.login input[type="email"], .login input[type="password"], .login input[type="button"]{
-	width: 90%;
+		width: 90%;
+	}
+	.register .reg-control {
+		width: 90%;
 	}
 
+	/*Search Box*/
+	.order .controls .search-box {
+		float: none;
+		width: auto;
+	}
+	.order .controls .search-button {
+		float: none;
+		width: auto;
+	}
+	.order .controls .sort-controls {
+		float: none;
+		width: auto;
+	}
+
+	/*Search Food Items*/
+	.food-item .item-details {
+		float: none;
+		width: 100%;
+	}
+	.food-item .item-commands {
+		float: none;
+		width: 100%;
+	}
+	.food-item .item-commands img {
+		display: none;
+	/*	padding: 10px;
+		margin: 3px;*/
+	}
+		/*CHECK OUT*/
+	.fullsection .selected-items{
+		width: 100%;
+		/*border: 1px solid #5a6872;*/
+	}
+
+	.fullsection .checkout{
+		width: 100%;
+		float: none;
+	}
+	.fullsection .selected-items .item-details{
+		width: 100%;
+		float: none;
+		text-align: center;
+	}
+	.fullsection .selected-items .item-commands{
+		width: 100%;
+		float: none;
+	}
+	.fullsection .selected-items .item-commands img{
+		display: none;
+	}
 }
