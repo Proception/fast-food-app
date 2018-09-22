@@ -67,10 +67,15 @@ function updateMenu(req, res) {
 // delete menu by menuid
 function deleteMenu(req, res) {
   const { menuid } = req.params;
-  //check if menu exists, else return 204
-  const status = (mapMenuList.delete(menuid)) ? 200 : 204;
-  res.status(status).end();
+  res.status((mapMenuList.delete(menuid)) ? 201 : 204).end();
 }
+
+// function deleteMenu(req, res) {
+//   const { menuid } = req.params;
+//   //check if menu exists, else return 204
+//   const status = (mapMenuList.delete(menuid)) ? 200 : 204;
+//   res.status(status).end();
+// }
 // exports a function declared earlier
 export {
   getMenuList, createMenu, getMenu, updateMenu, deleteMenu,
