@@ -8,8 +8,10 @@ const menu1 = new Menu(uuid(), 'Fufu', 700000, 5, 'core');
 const menu2 = new Menu(uuid(), 'White Rice', 600000, 5, 'Soups');
 const menu3 = new Menu('12345', 'Yam Porridge', 900000, 12, 'Stew');
 
-const mapMenuList = new Map([[menu.menuId, menu], [menu1.menuId, menu1],
-  [menu2.menuId, menu2], [menu3.menuId, menu3]]);
+const mapMenuList = new Map([[menu.menuId, menu], 
+  [menu1.menuId, menu1],
+  [menu2.menuId, menu2], 
+  [menu3.menuId, menu3]]);
 
 // Display list of all Menus.
 function getMenuList(req, res) {
@@ -68,9 +70,9 @@ function updateMenu(req, res) {
 function deleteMenu(req, res) {
   const { menuid } = req.params;
 
-  // set status based on whether or not menu was found
-  const status = (mapMenuList.delete(menuid)) ? 201 : 204;
 
+
+  const status = (mapMenuList.delete(menuid)) ? 201 : 204;
   res.status(status).end();
 }
 // exports a function declared earlier
