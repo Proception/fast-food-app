@@ -5,12 +5,10 @@ import { jsonIsEmpty as validate } from '../utils/validate';
 
 const menu = new Menu(uuid(), 'Egusi', 500000, 4, 'addon', new Date());
 const menu1 = new Menu(uuid(), 'Fufu', 700000, 5, 'core', new Date());
-const menu2 = new Menu(uuid(), 'White Rice', 600000, 5, 'Soups', new Date());
 const menua = new Menu('12345', 'Yam Porridge', 900000, 12, 'Stew', new Date());
 
 const mapMenuList = new Map([[menu.menuId, menu],
   [menu1.menuId, menu1],
-  [menu2.menuId, menu2],
   [menua.menuId, menua]]);
 
 // Display list of all Menus.
@@ -66,7 +64,7 @@ function updateMenu(req, res) {
   res.status(status).end();
 }
 
-// delete Order by Id
+// delete menu by menuid
 function deleteMenu(req, res) {
   const { menuid } = req.params;
   //check if menu exists, else return 204
