@@ -69,9 +69,6 @@ function updateMenu(req, res) {
 // delete Order by Id
 function deleteMenu(req, res) {
   const { menuid } = req.params;
-
-
-
   const status = (mapMenuList.delete(menuid)) ? 201 : 204;
   res.status(status).end();
 }
