@@ -71,7 +71,7 @@ function updateUser(req, res) {
 // delete User by email
 function deleteUser(req, res) {
   const { email } = req.params;
-  //get email
+  // get email
   const status = (mapUserList.delete(email)) ? 201 : 204;
   res.status(status).end();
 }
