@@ -3,10 +3,10 @@ import Menu from '../models/menus';
 import { jsonIsEmpty as validate } from '../utils/validate';
 // const validate = require('../utils/validate');
 
-const menu = new Menu(uuid(), 'Egusi', 500000, 4, 'addon');
-const menu1 = new Menu(uuid(), 'Fufu', 700000, 5, 'core');
-const menu2 = new Menu(uuid(), 'White Rice', 600000, 5, 'Soups');
-const menu3 = new Menu('12345', 'Yam Porridge', 900000, 12, 'Stew');
+const menu = new Menu(uuid(), 'Egusi', 500000, 4, 'addon', new Date());
+const menu1 = new Menu(uuid(), 'Fufu', 700000, 5, 'core', new Date());
+const menu2 = new Menu(uuid(), 'White Rice', 600000, 5, 'Soups', new Date());
+const menu3 = new Menu('12345', 'Yam Porridge', 900000, 12, 'Stew', new Date());
 
 const mapMenuList = new Map([[menu.menuId, menu], 
   [menu1.menuId, menu1],
@@ -29,7 +29,7 @@ function createMenu(req, res) {
   if (!(validate(json))) {
     const newMenu = new Menu(uuid(), json.name,
       json.price, json.quantity,
-      json.type);
+      json.type, new Date());
     mapMenuList.set(newMenu.menuId, newMenu);
     status = 201;
   } else {
@@ -55,7 +55,7 @@ function updateMenu(req, res) {
     name, price, quantity, type,
   } = req.body;
 
-  const updateData = new Menu(menuid, name, price, quantity, type);
+  const updateData = new Menu(menuid, name, price, quantity, type, new Date());
 
   const menuFound = mapMenuList.get(menuid);
   const status = (menuFound === undefined) ? 204 : 201;
