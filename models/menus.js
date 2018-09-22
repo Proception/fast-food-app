@@ -1,4 +1,5 @@
 export default class Menus {
+  
   constructor(menuId, name, price, quantity, type) {
     this.menuId = menuId;
     this.name = name;
