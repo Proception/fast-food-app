@@ -1,13 +1,22 @@
 import uuid from 'uuid/v4';
 import Order from '../models/orders';
+import Menu from '../models/menus';
 import Response from '../models/response';
 import { jsonIsEmpty as validate } from '../utils/validate';
 // const validate = require('../utils/validate');
 
-const order = new Order(uuid(), new Date(), 500000, 'new', '13, ayoade str, shomolu');
-const order1 = new Order(uuid(), new Date(), 700000, 'fulfilled', '14, ayoade str, shomolu');
-const order2 = new Order(uuid(), new Date(), 600000, 'declined', '15, ayoade str, shomolu');
-const order3 = new Order('12245', new Date(), 900000, 'accepted', '16, ayoade str, shomolu');
+const menu = new Menu(uuid(), 'rice', 2000, 1, 'core', new Date());
+const menu1 = new Menu(uuid(), 'beans', 500, 1, 'core', new Date());
+const menu2 = new Menu(uuid(), 'plantain', 300, 2, 'core', new Date());
+
+const menuList1 = [menu, menu2];
+const menuList2 = [menu1, menu2];
+const menuList3 = [menu, menu1, menu2];
+
+const order = new Order(uuid(), new Date(), 500000, 'new', '13, ayoade str, shomolu', menuList3, 'omasan.esimaje@gmail.com');
+const order1 = new Order(uuid(), new Date(), 700000, 'fulfilled', '14, ayoade str, shomolu', menuList2, 'oman.esimaje@gmail.com');
+const order2 = new Order(uuid(), new Date(), 600000, 'declined', '15, ayoade str, shomolu', menuList2, 'esimaje@gmail.com');
+const order3 = new Order('12245', new Date(), 900000, 'accepted', '16, ayoade str, shomolu', menuList1, 'omasan@gmail.com');
 
 
 let response;
@@ -19,7 +28,7 @@ const mapOrderList = new Map([[order.orderId, order], [order1.orderId, order1],
 function getOrderList(req, res) {
   const status = 200;
   response = new Response('Ok', '', mapOrderList);
-  //console.log(response, status);
+  // console.log(response, status);
   res.status(status).send(response);
 }
 
@@ -34,11 +43,11 @@ function createOrder(req, res) {
   if (!(validate(json))) {
     const newOrder = new Order(uuid(), new Date(),
       json.orderAmount, json.orderStatus,
-      json.shippingAddress);
+      json.shippingAddress, json.menu, json.userId);
     mapOrderList.set(newOrder.orderId, newOrder);
     status = 201;
     response = new Response('Ok', '', newOrder);
-    // console.log(response, status);
+    console.log(response, status);
   } else {
     status = 204;
     response = new Response('Ok', 'Unable To Create Order', json);
