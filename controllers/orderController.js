@@ -47,7 +47,7 @@ function createOrder(req, res) {
     mapOrderList.set(newOrder.orderId, newOrder);
     status = 201;
     response = new Response('Ok', '', newOrder);
-    console.log(response, status);
+    // console.log(response, status);
   } else {
     status = 204;
     response = new Response('Ok', 'Unable To Create Order', json);
