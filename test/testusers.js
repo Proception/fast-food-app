@@ -107,4 +107,3 @@ describe('DELETE /users', () => {
       });
   });
 });
-
