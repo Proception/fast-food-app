@@ -1,16 +1,21 @@
 import User from '../models/users';
+import Response from '../models/response';
 import { jsonIsEmpty as validate } from '../utils/validate';
 
 const user = new User('omasan.esimaje@gmail.com', 'Omasan Esimaje', '2347062257273', 'qwerty');
 const user1 = new User('benedict.esimaje@gmail.com', 'Benedict Esimaje', '2347062257274', 'asdfg');
 const user2 = new User('kene.esimaje@gmail.com', 'Kene Esimaje', '2347062257275', 'zxcvb');
 
+let response;
+
 const mapUserList = new Map([[user.email, user], [user1.email, user1],
   [user2.email, user2]]);
 
 // Display list of all Orders.
 function getUserList(req, res) {
-  res.status(200).send(mapUserList);
+  const status = 200;
+  response = new Response('ok', status, '', mapUserList);
+  res.status(status).send(response).end();
 }
 
 // Create New User.
@@ -24,13 +29,16 @@ function createUser(req, res) {
     phoneNo, password);
 
   const userFound = mapUserList.get(email);
-  const status = (userFound === undefined) ? 204 : 201;
+  const status = (userFound === undefined) ? 201 : 409;
 
   // Populate List in Memory if object is not empty
   if (!(validate(newUser)) && status === 201) {
     mapUserList.set(newUser.email, newUser);
+    response = new Response('ok', 'New user Created', newUser);
+  } else {
+    response = new Response('ok', 'User Already Exists, Consider Logging In', newUser);
   }
-  res.status(status).end();
+  res.status(status).send(response).end();
 }
 
 // Get single User by email
@@ -40,7 +48,13 @@ function getUser(req, res) {
   const userFound = mapUserList.get(email);
   // console.log('Found : ', userFound);
   const status = (userFound === undefined) ? 204 : 200;
-  res.status(status).send(userFound);
+
+  if (status === 204) {
+    response = new Response('ok', 'User Doesnt Exist', '');
+  } else {
+    response = new Response('ok', '', userFound);
+  }
+  res.status(status).send(response).end();
 }
 
 // Update User by email
@@ -53,26 +67,30 @@ function updateUser(req, res) {
 
   const updatedData = new User(email, fullName,
     phoneNo, password);
-
-  let userFound = mapUserList.get(email);
-  const status = (userFound === undefined) ? 204 : 201;
-
+  // console.log(email)
+  const userFound = mapUserList.get(email);
+  const status = (userFound === undefined) ? 400 : 200;
+  // console.log(status)
   // Set user
-  if (status === 201) {
-    userFound = updatedData;
+  if (status === 200) {
+    // userFound = updatedData;
     // userFound.phoneNo = (phoneNo === undefined) ? userFound.phoneNo : phoneNo;
     // userFound.fullName = (fullName === undefined) ? userFound.fullName : fullName;
     // userFound.password = (password === undefined) ? userFound.password : password;
-    mapUserList.set(userFound.email, userFound);
+    mapUserList.set(updatedData.email, updatedData);
+
+    response = new Response('ok', 'User Updated', updatedData);
+  } else {
+    response = new Response('ok', 'User Update failed', updatedData);
   }
-  res.status(status).end();
+  res.status(status).send(response).end();
 }
 
 // delete User by email
 function deleteUser(req, res) {
   const { email } = req.params;
   // get email
-  const status = (mapUserList.delete(email)) ? 201 : 204;
+  const status = (mapUserList.delete(email)) ? 202 : 400;
   res.status(status).end();
 }
 // exports a function declared earlier
