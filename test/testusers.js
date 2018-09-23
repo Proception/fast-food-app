@@ -4,23 +4,12 @@ import app from '../app';
 
 const request = supertest(app);
 
-// In this test it's expected an User list
-describe('GET /users', () => {
-  it('returns a list of users', (done) => {
-    request.get('/api/v1/users')
-      .expect(200)
-      .end((err) => {
-        done(err);
-      });
-  });
-});
-
 // Testing the save User expecting status 201 of success
 describe('POST /users', () => {
   it('Creates a new user', (done) => {
     request.post('/api/v1/users')
       .send({
-        email: 'omasan.esimaje@gmail.com',
+        email: 'oma32323.esimaje@gmail.com',
         fullName: 'Benedict Esimaje',
         phoneNo: '07062257273',
         password: 'mypassword',
@@ -30,19 +19,15 @@ describe('POST /users', () => {
         done(err);
       });
   });
-});
-
-// Testing the save User expecting status 201 of success
-describe('POST /users', () => {
-  it('Creates a new user(if user does not exist)', (done) => {
+  it('if user already exists do not create', (done) => {
     request.post('/api/v1/users')
       .send({
-        email: 'oma.esimaje@gmail.com',
+        email: 'omasan.esimaje@gmail.com',
         fullName: 'Benedict Esimaje',
         phoneNo: '07062257273',
         password: 'mypassword',
       })
-      .expect(204)
+      .expect(409)
       .end((err) => {
         done(err);
       });
@@ -51,6 +36,13 @@ describe('POST /users', () => {
 
 // Testing the GET a single user based on email expecting status 201 of success
 describe('GET /users', () => {
+  it('returns a list of users', (done) => {
+    request.get('/api/v1/users')
+      .expect(200)
+      .end((err) => {
+        done(err);
+      });
+  });
   it('gets a user based on Email', (done) => {
     request.get('/api/v1/users/omasan.esimaje@gmail.com')
       .expect(200)
@@ -58,12 +50,8 @@ describe('GET /users', () => {
         done(err);
       });
   });
-});
-
-// Testing the GET a single user based on email expecting status 204 if user doesnt exist
-describe('GET /users', () => {
   it('gets a user based on Email(users doesn exist)', (done) => {
-    request.get('/api/v1/users/omasan.esimaje@gmail.c')
+    request.get('/api/v1/users/omasan.esimaje@gmail.ccc')
       .expect(204)
       .end((err) => {
         done(err);
@@ -82,16 +70,12 @@ describe('PUT /users', () => {
         phoneNo: '07062257273',
         password: 'mypassword',
       })
-      .expect(201)
+      .expect(200)
       .end((err) => {
         done(err);
       });
   });
-});
-
-// Testing the Update a single user based on email expecting status 204 if user doesnt exist
-describe('PUT /users', () => {
-  it('Updates details of an existing user (User doesnt exist)', (done) => {
+  it('Updates details of a non existent user', (done) => {
     request.put('/api/v1/users/omasan.esimaje@gma')
       .send({
         email: 'omas.esimaje@gmail.com',
@@ -99,59 +83,28 @@ describe('PUT /users', () => {
         phoneNo: '07062257273',
         password: 'mypassword',
       })
-      .expect(204)
+      .expect(400)
       .end((err) => {
         done(err);
       });
   });
 });
-
-// // Testing the Update a single user based on email expecting status 204 if user doesnt exist
-// describe('PUT /users', () => {
-//   it('Updates details of an existing user (Object is updating phone)', (done) => {
-//     request.put('/api/v1/users/omasan.esimaje@gmail.com')
-//       .send({
-//         phoneNo: '07062257273',
-//       })
-//       .expect(201)
-//       .end((err) => {
-//         done(err);
-//       });
-//   });
-// });
-
-// // Testing the Update a single user based on email expecting status 204 if user doesnt exist
-// describe('PUT /users', () => {
-//   it('Updates details of an existing user (Object is updating password)', (done) => {
-//     request.put('/api/v1/users/omasan.esimaje@gmail.com')
-//       .send({
-//         password: 'mypassword',
-//       })
-//       .expect(201)
-//       .end((err) => {
-//         done(err);
-//       });
-//   });
-// });
 
 // Testing the Delete a single user based on email expecting status 201 of success
 describe('DELETE /users', () => {
   it('Delete an existing user', (done) => {
     request.delete('/api/v1/users/omasan.esimaje@gmail.com')
-      .expect(201)
+      .expect(202)
+      .end((err) => {
+        done(err);
+      });
+  });
+  it('Delete an existing user (User doesnt exist)', (done) => {
+    request.delete('/api/v1/users/omasan.esimaje@gmail.cm')
+      .expect(400)
       .end((err) => {
         done(err);
       });
   });
 });
 
-// Testing the Delete a single user based on email expecting status 204 if user doesnt exist
-describe('DELETE /users', () => {
-  it('Delete an existing user (User doesnt exist)', (done) => {
-    request.delete('/api/v1/users/omasan.esimaje@gmail.cm')
-      .expect(204)
-      .end((err) => {
-        done(err);
-      });
-  });
-});
