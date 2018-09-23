@@ -13,40 +13,6 @@ describe('GET /orders', () => {
         done(err);
       });
   });
-});
-
-// Testing the save Order expecting status 201 of success
-describe('POST /orders', () => {
-  it('saves a new order', (done) => {
-    request.post('/api/v1/orders')
-      .send({
-        orderNo: '2323',
-        orderDate: '12/13/2020',
-        orderAmount: 900000,
-        orderStatus: 'accepted',
-        shippingAddress: '16, ayoade str, shomolu',
-      })
-      .expect(201)
-      .end((err) => {
-        done(err);
-      });
-  });
-});
-
-// Testing the save Order expecting status 201 of success
-describe('POST /orders', () => {
-  it('saves a new order(Empty order)', (done) => {
-    request.post('/api/v1/orders')
-      .send({})
-      .expect(204)
-      .end((err) => {
-        done(err);
-      });
-  });
-});
-
-// Testing the GET a single order based on Id expecting status 201 of success
-describe('GET /orders', () => {
   it('gets an order based on ID', (done) => {
     request.get('/api/v1/orders/12245')
       .expect(200)
@@ -54,10 +20,6 @@ describe('GET /orders', () => {
         done(err);
       });
   });
-});
-
-// Testing the GET a single order based on Id expecting status 204 if order doesnt exist
-describe('GET /orders', () => {
   it('gets an order based on ID(Order doesn exist)', (done) => {
     request.get('/api/v1/orders/12245323')
       .expect(204)
@@ -67,6 +29,30 @@ describe('GET /orders', () => {
   });
 });
 
+// Testing the save Order expecting status 201 of success
+describe('POST /orders', () => {
+  it('saves a new order', (done) => {
+    request.post('/api/v1/orders')
+      .send({
+        orderNo: '2323',
+        orderAmount: 900000,
+        orderStatus: 'New',
+        shippingAddress: '16, ayoade str, shomolu',
+      })
+      .expect(201)
+      .end((err) => {
+        done(err);
+      });
+  });
+  it('saves a new order(Empty order)', (done) => {
+    request.post('/api/v1/orders')
+      .send({})
+      .expect(204)
+      .end((err) => {
+        done(err);
+      });
+  });
+});
 
 // Testing the Update a single order based on Id expecting status 201 of success
 describe('PUT /orders', () => {
@@ -80,10 +66,6 @@ describe('PUT /orders', () => {
         done(err);
       });
   });
-});
-
-// Testing the Update a single order based on Id expecting status 204 if item doesnt exist
-describe('PUT /orders', () => {
   it('Updates Status of an existing order (Order doesnt exist)', (done) => {
     request.put('/api/v1/orders/1224512122')
       .send({
@@ -105,10 +87,6 @@ describe('DELETE /orders', () => {
         done(err);
       });
   });
-});
-
-// Testing the Delete a single order based on Id expecting status 204 if item doesnt exist
-describe('DELETE /orders', () => {
   it('Delete an existing order (Order doesnt exist)', (done) => {
     request.delete('/api/v1/orders/1224532322')
       .expect(204)
