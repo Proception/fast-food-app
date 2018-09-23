@@ -14,7 +14,7 @@ const mapUserList = new Map([[user.email, user], [user1.email, user1],
 // Display list of all Orders.
 function getUserList(req, res) {
   const status = 200;
-  response = new Response('ok',status,'', mapUserList);
+  response = new Response('ok', status, '', mapUserList);
   res.status(status).send(response).end();
 }
 
@@ -34,9 +34,9 @@ function createUser(req, res) {
   // Populate List in Memory if object is not empty
   if (!(validate(newUser)) && status === 201) {
     mapUserList.set(newUser.email, newUser);
-    response = new Response('ok',status,'New user Created', newUser);
-  }else{
-    response = new Response('ok',status,'User Already Exists, Consider Logging In', newUser);
+    response = new Response('ok', 'New user Created', newUser);
+  } else {
+    response = new Response('ok', 'User Already Exists, Consider Logging In', newUser);
   }
   res.status(status).send(response).end();
 }
@@ -49,10 +49,10 @@ function getUser(req, res) {
   // console.log('Found : ', userFound);
   const status = (userFound === undefined) ? 204 : 200;
 
-  if (status === 204){
-    response = new Response('ok',status,'User Doesnt Exist', '');
-  }else{
-    response = new Response('ok',status,'', userFound);
+  if (status === 204) {
+    response = new Response('ok', 'User Doesnt Exist', '');
+  } else {
+    response = new Response('ok', '', userFound);
   }
   res.status(status).send(response).end();
 }
@@ -68,7 +68,7 @@ function updateUser(req, res) {
   const updatedData = new User(email, fullName,
     phoneNo, password);
   // console.log(email)
-  let userFound = mapUserList.get(email);
+  const userFound = mapUserList.get(email);
   const status = (userFound === undefined) ? 400 : 200;
   // console.log(status)
   // Set user
@@ -79,9 +79,9 @@ function updateUser(req, res) {
     // userFound.password = (password === undefined) ? userFound.password : password;
     mapUserList.set(updatedData.email, updatedData);
 
-    response = new Response('ok',status,'User Updated', updatedData);
-  } else{
-    response = new Response('ok',status,'User Update failed', updatedData);
+    response = new Response('ok', 'User Updated', updatedData);
+  } else {
+    response = new Response('ok', 'User Update failed', updatedData);
   }
   res.status(status).send(response).end();
 }
