@@ -1,19 +1,26 @@
 import uuid from 'uuid/v4';
 import Order from '../models/orders';
+import Response from '../models/response';
 import { jsonIsEmpty as validate } from '../utils/validate';
 // const validate = require('../utils/validate');
 
-const order = new Order(uuid(), '12/13/2018', 500000, 'new', '13, ayoade str, shomolu');
-const order1 = new Order(uuid(), '12/13/2019', 700000, 'fulfilled', '14, ayoade str, shomolu');
-const order2 = new Order(uuid(), '12/13/2017', 600000, 'declined', '15, ayoade str, shomolu');
-const order3 = new Order('12245', '12/13/2020', 900000, 'accepted', '16, ayoade str, shomolu');
+const order = new Order(uuid(), new Date(), 500000, 'new', '13, ayoade str, shomolu');
+const order1 = new Order(uuid(), new Date(), 700000, 'fulfilled', '14, ayoade str, shomolu');
+const order2 = new Order(uuid(), new Date(), 600000, 'declined', '15, ayoade str, shomolu');
+const order3 = new Order('12245', new Date(), 900000, 'accepted', '16, ayoade str, shomolu');
+
+
+let response;
 
 const mapOrderList = new Map([[order.orderId, order], [order1.orderId, order1],
   [order2.orderId, order2], [order3.orderId, order3]]);
 
 // Display list of all Orders.
 function getOrderList(req, res) {
-  res.status(200).send(mapOrderList);
+  const status = 200;
+  response = new Response('Ok', '', mapOrderList);
+  //console.log(response, status);
+  res.status(status).send(response);
 }
 
 // Create New Order.
@@ -25,15 +32,19 @@ function createOrder(req, res) {
 
   // Populate List in Memory if object is not empty
   if (!(validate(json))) {
-    const newOrder = new Order(json.orderId, json.orderDate,
+    const newOrder = new Order(uuid(), new Date(),
       json.orderAmount, json.orderStatus,
       json.shippingAddress);
     mapOrderList.set(newOrder.orderId, newOrder);
     status = 201;
+    response = new Response('Ok', '', newOrder);
+    // console.log(response, status);
   } else {
     status = 204;
+    response = new Response('Ok', 'Unable To Create Order', json);
+    // console.log(response, status);
   }
-  res.status(status).end();
+  res.status(status).send(response).end();
 }
 
 // Get single Order by Id
@@ -42,7 +53,14 @@ function getOrder(req, res) {
   const orderFound = mapOrderList.get(id);
   // console.log('Found : ', orderFound);
   const status = (orderFound === undefined) ? 204 : 200;
-  res.status(status).send(orderFound);
+  if (status === 200) {
+    response = new Response('Ok', '', orderFound);
+    // console.log(response, status);
+  } else {
+    response = new Response('Ok', 'Order does not Exist', '');
+    // console.log(response, status);
+  }
+  res.status(status).send(response).end();
 }
 
 // Update Order by Id
@@ -55,8 +73,14 @@ function updateOrder(req, res) {
   // Set status
   if (status === 201) {
     orderFound.orderStatus = orderStatus;
+    mapOrderList.set(orderFound.orderId, orderFound);
+    response = new Response('Ok', '', orderFound);
+    // console.log(response, status);
+  } else {
+    response = new Response('Ok', 'Order Does not exist', '');
+    // console.log(response, status);
   }
-  res.status(status).end();
+  res.status(status).send(response).end();
 }
 
 // delete Order by Id
