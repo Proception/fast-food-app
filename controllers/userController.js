@@ -14,7 +14,7 @@ const mapUserList = new Map([[user.email, user], [user1.email, user1],
 // Display list of all Orders.
 function getUserList(req, res) {
   const status = 200;
-  response = new Response('ok', status, '', mapUserList);
+  response = new Response('ok','', mapUserList);
   res.status(status).send(response).end();
 }
 
