@@ -19,6 +19,7 @@ const mapOrderList = new Map([[order.orderId, order], [order1.orderId, order1],
 function getOrderList(req, res) {
   const status = 200;
   response = new Response('Ok', '', mapOrderList);
+  //console.log(response, status);
   res.status(status).send(response);
 }
 
@@ -52,11 +53,11 @@ function getOrder(req, res) {
   const orderFound = mapOrderList.get(id);
   // console.log('Found : ', orderFound);
   const status = (orderFound === undefined) ? 204 : 200;
-  if (status === 204) {
-    response = new Response('Ok', 'Order does not Exist', '');
+  if (status === 200) {
+    response = new Response('Ok', '', orderFound);
     // console.log(response, status);
   } else {
-    response = new Response('Ok', '', orderFound);
+    response = new Response('Ok', 'Order does not Exist', '');
     // console.log(response, status);
   }
   res.status(status).send(response).end();
