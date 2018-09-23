@@ -13,6 +13,20 @@ describe('GET /menus', () => {
         done(err);
       });
   });
+  it('gets a menu based on menuid', (done) => {
+    request.get('/api/v1/menus/12345')
+      .expect(200)
+      .end((err) => {
+        done(err);
+      });
+  });
+  it('gets a menu based on menuid(menu doesnt exist)', (done) => {
+    request.get('/api/v1/menus/122222')
+      .expect(204)
+      .end((err) => {
+        done(err);
+      });
+  });
 });
 
 // Testing the save Menu expecting status 201 of success
@@ -30,10 +44,6 @@ describe('POST /menus', () => {
         done(err);
       });
   });
-});
-
-// Testing the save Menu expecting status 204 if json is empty
-describe('POST /menus', () => {
   it('Fails to create a new menu if json is empty', (done) => {
     request.post('/api/v1/menus')
       .send({})
@@ -43,29 +53,6 @@ describe('POST /menus', () => {
       });
   });
 });
-
-// Testing the GET a single menu based on menuid expecting status 201 of success
-describe('GET /menus', () => {
-  it('gets a menu based on menuid', (done) => {
-    request.get('/api/v1/menus/12345')
-      .expect(200)
-      .end((err) => {
-        done(err);
-      });
-  });
-});
-
-// Testing the GET a single menu based on menuid expecting status 204 if menu doesnt exist
-describe('GET /menus', () => {
-  it('gets a menu based on menuid(menu doesnt exist)', (done) => {
-    request.get('/api/v1/menus/122222')
-      .expect(204)
-      .end((err) => {
-        done(err);
-      });
-  });
-});
-
 
 // Testing the Update a single menu based on menuid expecting status 201 of success
 describe('PUT /menus', () => {
@@ -82,10 +69,6 @@ describe('PUT /menus', () => {
         done(err);
       });
   });
-});
-
-// Testing the Update a single menu based on menuid expecting status 204 if user doesnt exist
-describe('PUT /menus', () => {
   it('Updates details of an existing menu (menu doesnt exist)', (done) => {
     request.put('/api/v1/menus/12121212')
       .send({
@@ -110,10 +93,6 @@ describe('DELETE /menu', () => {
         done(err);
       });
   });
-});
-
-// Testing the Delete a single menu based on menuid expecting status 204 if menu doesnt exist
-describe('DELETE /menus', () => {
   it('Delete an existing menu (Menu doesnt exist)', (done) => {
     request.delete('/api/v1/menus/12121212121')
       .expect(204)

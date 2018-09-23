@@ -1,5 +1,6 @@
 import uuid from 'uuid/v4';
 import Menu from '../models/menus';
+import Response from '../models/response';
 import { jsonIsEmpty as validate } from '../utils/validate';
 // const validate = require('../utils/validate');
 
@@ -7,13 +8,17 @@ const menu = new Menu(uuid(), 'Egusi', 500000, 4, 'addon', new Date());
 const menu1 = new Menu(uuid(), 'Fufu', 700000, 5, 'core', new Date());
 const menua = new Menu('12345', 'Yam Porridge', 900000, 12, 'Stew', new Date());
 
+let response;
+
 const mapMenuList = new Map([[menu.menuId, menu],
   [menu1.menuId, menu1],
   [menua.menuId, menua]]);
 
 // Display list of all Menus.
 function getMenuList(req, res) {
-  res.status(200).send(mapMenuList);
+  const status = 200;
+  response = new Response('Ok', '', mapMenuList);
+  res.status(status).send(response);
 }
 
 // Create New Menu.
@@ -30,10 +35,14 @@ function createMenu(req, res) {
       json.type, new Date());
     mapMenuList.set(newMenu.menuId, newMenu);
     status = 201;
+    response = new Response('Ok', '', newMenu);
+    // console.log(response, status);
   } else {
     status = 204;
+    response = new Response('NOK', 'Menu Creation Failed', json);
+    // console.log(response, status);
   }
-  res.status(status).end();
+  res.status(status).send(response).end();
 }
 
 // Get single menu by Id
@@ -42,7 +51,16 @@ function getMenu(req, res) {
   const menuFound = mapMenuList.get(menuid);
 
   const status = (menuFound === undefined) ? 204 : 200;
-  res.status(status).send(menuFound);
+
+  if (status === 204) {
+    response = new Response('Ok', 'Menu item Not available', '');
+    // console.log(response, status);
+  } else {
+    response = new Response('Ok', '', menuFound);
+    // console.log(response, status);
+  }
+
+  res.status(status).send(response).end();
 }
 
 // Update menu by Id
@@ -60,8 +78,13 @@ function updateMenu(req, res) {
   // update if the menu object
   if (status === 201) {
     mapMenuList.set(updateData.menuId, updateData);
+    response = new Response('Ok', '', updateData);
+    // console.log(response, status);
+  } else {
+    response = new Response('Ok', 'Update failed', '');
+    // console.log(response, status);
   }
-  res.status(status).end();
+  res.status(status).send(response).end();
 }
 
 // delete menu by menuid
@@ -70,12 +93,6 @@ function deleteMenu(req, res) {
   res.status((mapMenuList.delete(menuid)) ? 201 : 204).end();
 }
 
-// function deleteMenu(req, res) {
-//   const { menuid } = req.params;
-//   //check if menu exists, else return 204
-//   const status = (mapMenuList.delete(menuid)) ? 200 : 204;
-//   res.status(status).end();
-// }
 // exports a function declared earlier
 export {
   getMenuList, createMenu, getMenu, updateMenu, deleteMenu,
