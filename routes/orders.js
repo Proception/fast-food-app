@@ -32,22 +32,21 @@ const orders = new OrderController(response, mapOrderList);
 
 // GET request for returning all orders
 router.get('/', (req, res) => {
-  // console.log("Without : ", menus.getOrderList(req, res));
-  const resObj = orders.getOrderList();
+  const respObj = orders.getOrderList();
   // console.log(resObj);
-  res.status(resObj.code).json(resObj);
+  res.status(respObj.code).json(respObj);
 });
 
 // GET request for returning order based on id
 router.get('/:id', (req, res) => {
-  // console.log("Without : ", menus.getOrder(req, res));
+  // console.log("Without : ", orders.getOrder(req, res));
   const resObj = orders.getOrder(req, res);
   // console.log(resObj);
   res.status(resObj.code).json(resObj);
 });
 // POST request for posting data
 router.post('/', (req, res) => {
-  // console.log("Without : ", menus.createOrder(req, res));
+  // console.log("Without : ", orders.createOrder(req, res));
   const resObj = orders.createOrder(req, res);
   // console.log(resObj);
   res.status(resObj.code).json(resObj);
@@ -55,7 +54,7 @@ router.post('/', (req, res) => {
 
 // PUT request for returning all orders
 router.put('/:id', (req, res) => {
-  // console.log("Without : ", menus.updateOrder(req, res));
+  // console.log("Without : ", orders.updateOrder(req, res));
   const resObj = orders.updateOrder(req, res);
   // console.log(resObj);
   res.status(resObj.code).json(resObj);
@@ -63,7 +62,7 @@ router.put('/:id', (req, res) => {
 
 // DELETE request to Delete order by ID
 router.delete('/:id', (req, res) => {
-  // console.log("Without : ", menus.deleteOrder(req, res));
+  // console.log("Without : ", orders.deleteOrder(req, res));
   const status = orders.deleteOrder(req, res);
   // console.log(resObj);
   res.status(status).json();
