@@ -302,7 +302,7 @@ footer {
 	width: 25%;
 	float: right;
 	padding: 10px;
-	position: relative;
+	/*position: relative;*/
 }
 
 .controls .sort-controls select{
@@ -315,8 +315,7 @@ footer {
 	border-radius: 3px; 
 	background-color: #fff; color: #444444; 
 	font-size: 12px; line-height: 16px !important; 
-	appearance: none; 
-	/* this is must */ 
+	appearance: none;
 	-webkit-appearance: none; -moz-appearance: none;
 }
 
