@@ -7,6 +7,7 @@
 		<meta name="keywords" content="Order food, fast food, online food booking">
 		<title>Fast Food Fast | Login </title>
 		<link rel="stylesheet" type="text/css" href="./css/style.css">
+		<link rel="stylesheet" type="text/css" href="./css/login.css">
 	</head>
 	<body>
 		<div class="main-container">
@@ -41,10 +42,13 @@
 					<div id="wrapper">
 					<h1>Enter Login Details</h1>
 						<div class="login">
-							<p><input placeholder="Email" type="email" name=""></p>
-							<p><input placeholder="password" type="password" name=""></p>
-							<p><input class="button" type="button" name="" value="Login"></p>
-							<h5>Dont have an account click <a href="signup.html">here</a></h5>
+							<div id="notif"></div>
+							<form novalidate>
+								<p><input placeholder="Email" value="" type="email" name="email" ></p>
+								<p><input placeholder="password" value="" type="password" name="pass"></p>
+								<p><input class="button" type="button" name="" value="Login" onclick="loginHandler.validate()"></p>
+								<h5>Dont have an account click <a href="signup.html">here</a></h5>
+							</form>
 						</div>
 					</div>
 				</div>
@@ -54,5 +58,6 @@
 					<p>Fast Food Fast Copyright &copy; 2018</p>
 				</footer>
 		</div>
+		<script type="text/javascript" src="./js/login.js"></script>
 	</body>
 </html>
