@@ -9,13 +9,25 @@ const signupform = {
     const password = document.getElementsByName('pass')[0].value;
     const cpassword = document.getElementsByName('cpass')[0].value;
 
-    console.log(email, name, phoneNo, password);
+    // console.log(email, name, phoneNo, password);
     const validEmail = (email !== '') ? this.checkEmail(email) : false;
     const validName = (name !== '') ? this.checkName(name) : false;
     const validPhoneNo = (phoneNo !== '') ? this.checkPhoneNo(phoneNo) : false;
     const validPassword = (password !== '' && cpassword !== '') ? this.checkPassword(password, cpassword) : false;
 
-    console.log(validEmail, validName, validPhoneNo, validPassword);
+    // console.log(validEmail, validName, validPhoneNo, validPassword);
+    if (!validPassword) {
+      this.notif('warning', 'Password Mismatch');
+    }
+    if (!validPhoneNo) {
+      this.notif('warning', 'Phone Number Length should be 13. In the format : 2347123456789');
+    }
+    if (!validName) {
+      this.notif('warning', 'Please Enter a Name');
+    }
+    if (!validEmail) {
+      this.notif('warning', 'Please enter a valid email');
+    }
     const valid = !!((validName && validPassword && validEmail && validPhoneNo));
     return valid;
   },
@@ -32,38 +44,43 @@ const signupform = {
     return valid;
   },
   checkPhoneNo(value) {
-    const validlength = value.length === 12;
+    const validlength = value.length === 13;
     const valid = !!(validlength);
-    if (!(validlength)) {
-      alert('Phone Number Length should be 13. In the format : 2347123456789');
-    }
     return valid;
   },
   checkPassword(pass, cpass) {
     const valid = (pass === cpass);
-    if (!(valid)) {
-      alert('Password Mismatch');
-    }
-
     return valid;
+  },
+  notif(clas, message) {
+    document.getElementById('notif').setAttribute('class', clas);
+    document.getElementById('notif').innerHTML = '';
+    document.getElementById('notif').innerHTML += message;
   },
 };
 
 
-const handlers = {
+const signUphandlers = {
   handlers: [],
   validate() {
     if (signupform.validate()) {
-      alert('Registration Successful');
+      signupform.notif('success', 'Registration Successful');
       window.location.href = 'login.html';
     }
   },
 };
 
 
-const submitform = {
-  submitform: [],
-  host: '',
-  port: '',
-  endPoint: '',
-};
+// const submitform = {
+//   submitform: [],
+//   host: '',
+//   port: '',
+//   endPoint: '',
+// };
+
+const signupBtn = document.getElementById('signup');
+
+
+signupBtn.addEventListener('click', () => {
+  signUphandlers.validate();
+});

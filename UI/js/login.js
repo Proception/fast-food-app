@@ -9,14 +9,10 @@ const loginForm = {
     const validEmail = (email !== '') ? this.checkEmail(email) : false;
     const validPass = (pass.length > 0);
     if (!validPass) {
-      document.getElementById('notif').setAttribute('class', 'warning');
-      document.getElementById('notif').innerHTML = '';
-      document.getElementById('notif').innerHTML += 'Please enter a password';
+      this.notif('warning', 'Please enter a password');
     }
     if (!validEmail) {
-      document.getElementById('notif').setAttribute('class', 'warning');
-      document.getElementById('notif').innerHTML = '';
-      document.getElementById('notif').innerHTML += 'Invalid Email';
+      this.notif('warning', 'Invalid Email');
     }
     const valid = (validEmail && validPass);
     return valid;
@@ -29,6 +25,11 @@ const loginForm = {
     const valid = !((typeof param === 'boolean' || param.length < 1));
     return valid;
   },
+  notif(clas, message) {
+    document.getElementById('notif').setAttribute('class', clas);
+    document.getElementById('notif').innerHTML = '';
+    document.getElementById('notif').innerHTML += message;
+  },
 
 };
 
@@ -40,3 +41,10 @@ const loginHandler = {
     }
   },
 };
+
+const loginBtn = document.getElementById('login');
+
+
+loginBtn.addEventListener('click', () => {
+  loginHandler.validate();
+});
