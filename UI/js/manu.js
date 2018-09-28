@@ -1,5 +1,5 @@
 export default class Manus {
-  constructor(menuId, name, price, quantity, type, imgUrl, dateCreated) {
+  constructor(menuId, name, price, quantity, type, imgUrl, dateCreated, cost) {
     this.menuId = menuId;
     this.name = name;
     this.price = price;
@@ -7,5 +7,6 @@ export default class Manus {
     this.type = type;
     this.imgUrl = imgUrl;
     this.dateCreated = dateCreated;
+    this.cost = cost;
   }
 }

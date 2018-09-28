@@ -21,6 +21,8 @@ const myMenu = new Menu(mapMenuList);
 
 const buttons = document.querySelectorAll('button');
 
+console.log(buttons);
+
 const handlers = {
   handlers: [],
   add(id, qty) {
@@ -29,7 +31,7 @@ const handlers = {
     document.getElementById('cart').innerHTML = `(${handlers.cartSize()})`;
 
     // console.log(JSON.stringify([...myCart.getAllItems()]));
-    window.localStorage.setItem('cart', JSON.stringify(JSON.stringify([...myCart.getAllItems()])));
+    this.saveCart([...myCart.getAllItems()]);
   },
   cartSize() {
     return myCart.getSize();
@@ -40,6 +42,9 @@ const handlers = {
     // console.log('Parsed Cart :', cart);
     // cart = new Map(cart);
     return cart;
+  },
+  saveCart(items) {
+    window.localStorage.setItem('cart', JSON.stringify(JSON.stringify(items)));
   },
 
 };

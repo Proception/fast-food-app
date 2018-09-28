@@ -41,44 +41,11 @@
 				<div class="fullsection">
 					<h3>Your Food Selection</h3>
 					<div class="checkout">
-						<p><label for="price">Sum Total : </label><span>&#8358;60,000</span></p>
-						<p><input class="button" type="button" name="" value="checkout"></p>
+						<p><label for="price">Sum Total : </label><span id="total"></span></p>
+						<p><input id="checkout" class="button" type="button" name="" value="checkout"></p>
 					</div>
-					<div class="selected-items">
-						<div class="item-details">
-							<p><label for="foodname">Food Name :</label><span>Asun</span></p>
-							<p><label for="price">Price per unit :</label><span>&#8358;10,000</span></p>
-							<p><label for="quantity">Qty :</label><input type="number" name="quantity" min="0" max="100" step="1" value="4"></p>
-						</div>
-						<div class="item-commands">
-							<p><img src="images/asun.jpg"></p>
-							<p><input class="button" type="button" name="" value="Delete Item"></p>
-						</div>
-					</div>
+					<div id="sec" ></div>
 
-
-					<div class="selected-items">
-						<div class="item-details">
-							<p><label for="foodname">Food Name :</label><span>White Rice</span></p>
-							<p><label for="price">Price per unit :</label><span>&#8358;10,000</span></p>
-							<p><label for="quantity">Qty :</label><input type="number" name="quantity" min="0" max="100" step="1" value="1"></p>
-						</div>
-						<div class="item-commands">
-							<p><img src="images/rice.jpg"></p>
-							<p><input class="button" type="button" name="" value="Delete Item"></p>
-						</div>
-					</div>
-					<div class="selected-items">
-						<div class="item-details">
-							<p><label for="foodname">Food Name :</label><span>Beans</span></p>
-							<p><label for="price">Price per unit :</label><span>&#8358;10,000</span></p>
-							<p><label for="quantity">Qty :</label><input type="number" name="quantity" min="0" max="100" step="1" value="1"></p>
-						</div>
-						<div class="item-commands">
-							<p><img src="images/beans.jpg"></p>
-							<p><input class="button" type="button" name="" value="Delete Item"></p>
-						</div>
-					</div>
 				</div>
 
 			</div>
@@ -88,5 +55,9 @@
 			<p>Fast Food Fast Copyright &copy; 2018</p>
 		</footer>
 	</div>
+	<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+	<script data-plugins="transform-es2015-modules-umd" type="text/babel" src="./js/manu.js"></script>
+	<script data-plugins="transform-es2015-modules-umd" type="text/babel" src="./js/cart.js"></script>
+	<script data-plugins="transform-es2015-modules-umd" type="text/babel" src="./js/checkout.js"></script>
 	</body>
 </html>
