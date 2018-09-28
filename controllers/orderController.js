@@ -36,8 +36,8 @@ export default class OrderController {
       this.response = new Response('Ok', status, '', newOrder);
       // console.log(response, status);
     } else {
-      status = 204;
-      this.response = new Response('Ok', status, 'Unable To Create Order', json);
+      status = 400;
+      this.response = new Response('NOK', status, 'Unable To Create Order', json);
       // console.log(response, status);
     }
     // res.status(status).send(response).end();
@@ -67,7 +67,7 @@ export default class OrderController {
     // Get params in body
     const { orderStatus } = req.body;
     const orderFound = this.mapOrderList.get(id);
-    const status = (orderFound === undefined) ? 204 : 201;
+    const status = (orderFound === undefined) ? 400 : 201;
     // Set status
     if (status === 201) {
       orderFound.orderStatus = orderStatus;
@@ -75,7 +75,7 @@ export default class OrderController {
       this.response = new Response('Ok', status, '', orderFound);
       // console.log(response, status);
     } else {
-      this.response = new Response('Ok', status, 'Order Does not exist', '');
+      this.response = new Response('NOK', status, 'Order Does not exist', '');
       // console.log(response, status);
     }
     // res.status(status).send(response).end();
@@ -85,7 +85,7 @@ export default class OrderController {
   // delete Order by Id
   deleteOrder(req) {
     const { id } = req.params;
-    const status = (this.mapOrderList.delete(id)) ? 201 : 204;
+    const status = (this.mapOrderList.delete(id)) ? 201 : 400;
     // res.status(status).end();
     return status;
   }
