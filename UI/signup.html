@@ -7,13 +7,15 @@
 		<meta name="keywords" content="Order food, fast food, online food booking">
 		<title>Fast Food Fast | Sign Up </title>
 		<link rel="stylesheet" type="text/css" href="./css/style.css">
+		<link rel="stylesheet" type="text/css" href="./css/signup.css">
 	</head>
 	<body>
+		<div class="main-container">
 			<header>
 				<div class="container">
-					<div id="brand-logo">
+					<a href="index.html"><div id="brand-logo">
 						<h1> <span class="">Fast</span> Food Fast</h1>
-					</div>
+					</div></a>
 					<nav>
 						<ul class="nav">
 							<li><a href="index.html">Home</a></li>
@@ -40,13 +42,16 @@
 				<div id="wrapper">
 				<h1>Enter Registration Details</h1>
 					<div class="register">
-						<p><input class="reg-control" placeholder="Email" type="email" name=""></p>
-						<p><input class="reg-control" placeholder="Full Name" type="text" name=""></p>
-						<p><input class="reg-control" placeholder="Phone number" type="number" name=""></p>
-						<p><input class="reg-control" placeholder="password" type="password" name=""></p>
-						<p><input class="reg-control" placeholder="Confirm Password" type="password" name=""></p>
-						<p><input type="button" name="" value="Signup"></p>
-						<h5>Already have an account click <a href="login.html">here</a></h5>
+						<div id="notif"></div>
+						<form novalidate>
+							<p><input class="reg-control" value="" placeholder="Email" type="email" name="email" ></p>
+							<p><input class="reg-control" value="" placeholder="Full Name" type="text" name="name"></p>
+							<p><input class="reg-control" value="" placeholder="Phone number" type="number" name="pnumber"></p>
+							<p><input class="reg-control" value="" placeholder="password" type="password" name="pass"></p>
+							<p><input class="reg-control" value="" placeholder="Confirm Password" type="password" name="cpass"></p>
+							<p><input class="button" id="signup" type="button" name="" value="Signup"></p>
+							<h5>Already have an account click <a href="login.html">here</a></h5>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -54,5 +59,7 @@
 		<footer>
 			<p>Fast Food Fast Copyright &copy; 2018</p>
 		</footer>
+	</div>
+	<script type="text/javascript" src="./js/signup.js"></script>
 	</body>
 </html>

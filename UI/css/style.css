@@ -2,7 +2,11 @@ body {
 	font : 15px/1.5 Arial, Helvetica, sans-serif;
 	padding: 0;
 	margin: 0;
-	background-color: #dfe3e6;
+	/*background-color: #dfe3e6;*/
+	background-color: #ffffff;
+	/*Footer*/
+	height: 100%;
+	position: relative;
 }
 
 body h2{
@@ -13,30 +17,83 @@ label{
 	font-weight: bold;
 }
 
+input, textarea {
+	-webkit-border-radius: 28;
+  	-moz-border-radius: 28;
+  	border-radius: 28px;
+}
+
+
+
 /* Global */
+.main-container {
+	/*Footer*/
+	min-height: 100vh; /* will cover the 100% of viewport */
+ 	overflow: hidden;
+ 	display: block;
+ 	position: relative;
+	padding-bottom: 100px;
+	}
+
 .container {
 	width: 80%;
 	margin: auto;
+	float: none;
 	overflow: hidden;
 }
 
 .button{
 	height: 35px;
-	background: #3d70b2;
+	/*background: #3d70b2;*/
+	background-color: #F34B27;
 	color:#ffffff;
 	border: 0;
 	padding-right: 40px;
 	padding-left: 40px;
 	width: 100%;
+	cursor: pointer;
+	-webkit-border-radius: 28;
+  	-moz-border-radius: 28;
+  	border-radius: 28px;
+  	border-radius: 28px;
+  	font-weight: bold;
+  	font-family: sans-serif;
+}
+
+.button:hover{
+	background-color: #ffffff;
+	border: 2px solid  #F34B27;
+	/*color: #3d70b2;*/
+	color: #F34B27;
+	font-family: cursive;
+	font-weight: bold;
 }
 
 .button_1 {
 	height: 35px;
-	background: #3d70b2;
+	/*background: #3d70b2;*/
+	background: #F34B27;
 	color:#ffffff;
 	border: 0;
 	padding-right: 40px;
 	padding-left: 40px;
+	cursor: pointer;
+	-webkit-border-radius: 28;
+  	-moz-border-radius: 28;
+  	border-radius: 28px;
+  	font-weight: bold;
+  	font-family: sans-serif;
+
+
+}
+.button_1:hover {
+	background-color: #ffffff;
+	/*border: 2px solid  #3d70b2;*/
+	/*border: 2px solid #F34B27;*/
+	border: 2px solid #5a6872;
+	color: #F34B27;
+	font-family: cursive;
+	font-weight: bold;
 }
 
 
@@ -44,7 +101,9 @@ label{
 
 /* header */
 header {
-	background-color: #3d70b2;
+	/*background-color: #3d70b2;*/
+	background-color: #ffffff;
+	/*background-color: #41d6c3;*/
 	color: #f4f7fb;
 	padding-top: 15px;
 	min-height: 60px;
@@ -52,10 +111,13 @@ header {
 }
 
 header a {
-	color: #f4f7fb;
+	/*color: #f4f7fb;*/
+	color: #F34B27;
 	text-decoration: none;
 	text-transform: uppercase;
-	font-size: 13px;
+	font-size: 14px;
+	font-weight: bold;
+	font-family: sans-serif;
 }
 
 header li {
@@ -66,6 +128,7 @@ header li {
 
 header #brand-logo {
 	float: left;
+ 	/*font-family: sans-serif;*/
 }
 
 header #brand-logo h1{
@@ -83,8 +146,12 @@ header .highlight, header .current a{
 }
 
 header a:hover{
+	/*color: #5a6872;*/
+	/*color: #bd1427;*/
 	color: #5a6872;
 	font-weight: bold;
+	/*font-family: sans-serif;*/
+	font-family: cursive;
 }
 
 
@@ -122,7 +189,9 @@ header a:hover{
   li:hover ul {
   	display: block; 
   	position: fixed;
-  	background-color: #3d70b2;
+  	/*position: relative;*/
+  	/*background-color: #3d70b2;*/
+  	background-color: #ffffff;
   }
   li:hover li {
   	float: none;
@@ -146,6 +215,7 @@ header a:hover{
 	margin-top: 100px;
 	font-size: 45px;
 	margin-bottom: 10px;
+	font-family: cursive;
 }
 
 #specials {
@@ -168,20 +238,26 @@ header a:hover{
 }
 
 footer {
-	padding: 20px;
-	margin-top: 20px;
 	color: #ffffff;
-	background-color: #3d70b2;
+	/*background-color: #3d70b2;*/
+	background-color: #F34B27;
 	text-align: center;
-	width: auto;
-	position: relative;
-	overflow: hidden;
-	bottom: 0;
-	float: bottom;
+ 	position: absolute;
+ 	bottom: 0;
+ 	width: 100%;
+ 	margin-top: 50px;
+ 	font-family: sans-serif;
+ 	font-weight: bold;
 }
 
 
 /* login */
+
+.login{
+	/*margin: 40px;*/
+
+}
+
 .login p{
 	float: center;
 }
@@ -191,6 +267,9 @@ footer {
   padding: 0px;
   text-align: center;
   width: 50%;
+  /*height: 300px;*/
+  /*box-shadow: 5px 10px #F34B27;*/
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .login input[type="email"], .login input[type="password"]{
@@ -200,9 +279,10 @@ footer {
 
 .login input[type="button"]{
 	height: 35px;
-	background: #3d70b2;
+	background: #F34B27;
 	color:#ffffff;
 	border: 0;
+	margin: 3px;
 	padding-right: 40px;
 	padding-left: 40px;
 	width: 60%;
@@ -216,7 +296,7 @@ footer {
 
 .register input[type="button"]{
 	height: 35px;
-	background: #3d70b2;
+	background: #F34B27;
 	color:#ffffff;
 	border: 0;
 	padding-right: 40px;
@@ -235,7 +315,8 @@ footer {
 	margin: 3px;
 	float: left;
 	width: 20%;
-	border: 1px solid #5a6872;
+	/*border: 1px solid #5a6872;*/
+	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
 }
 
 .order .order-item p{
@@ -250,11 +331,11 @@ footer {
 .order h3 {
 	text-align: left;
 }
-
+/*food-item-img*/
 .order .order-item img{
-	width: 100%;
+    max-width: 100%;
+    height: 150px;
 }
-
 
 /* order history*/
 .order .old-order{
@@ -297,7 +378,7 @@ footer {
 	width: 25%;
 	float: right;
 	padding: 10px;
-	position: relative;
+	/*position: relative;*/
 }
 
 .controls .sort-controls select{
@@ -310,8 +391,7 @@ footer {
 	border-radius: 3px; 
 	background-color: #fff; color: #444444; 
 	font-size: 12px; line-height: 16px !important; 
-	appearance: none; 
-	/* this is must */ 
+	appearance: none;
 	-webkit-appearance: none; -moz-appearance: none;
 }
 
@@ -347,9 +427,16 @@ footer {
 }
 
 .food-item .item-commands img {
-	width: 100%;
+/*	width: 100%;
+	height: 40px;*/
 /*	padding: 10px;
 	margin: 3px;*/
+  	width: 100%;
+  	height: auto;
+  	vertical-align: middle;
+	display: flex;
+	/*flex: 1.3344;*/
+
 }
 
 /* checkout */

@@ -1,0 +1,18 @@
+/* This is our style for the invalid fields */
+input:invalid{
+  border-color: #900;
+  background-color: #FDD;
+}
+.success, .warning {
+	padding: 15px;
+	margin: 10px 0px;
+}
+
+.success {
+    color: #4F8A10;
+    background-color: #DFF2BF;
+}
+.warning {
+    color: #9F6000;
+    background-color: #FEEFB3;
+}
