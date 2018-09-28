@@ -52,7 +52,7 @@ describe('GET /users', () => {
   });
   it('gets a user based on Email(users doesn exist)', (done) => {
     request.get('/api/v1/users/omasan.esimaje@gmail.ccc')
-      .expect(204)
+      .expect(404)
       .end((err) => {
         done(err);
       });

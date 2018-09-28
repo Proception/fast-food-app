@@ -34,7 +34,7 @@ export default class MenuController {
       this.response = new Response('Ok', status, '', newMenu);
       // console.log(response, status);
     } else {
-      status = 204;
+      status = 400;
       this.response = new Response('NOK', status, 'Menu Creation Failed', json);
       // console.log(response, status);
     }
@@ -47,9 +47,9 @@ export default class MenuController {
     const { menuid } = req.params;
     const menuFound = this.mapMenuList.get(menuid);
 
-    const status = (menuFound === undefined) ? 204 : 200;
+    const status = (menuFound === undefined) ? 404 : 200;
 
-    if (status === 204) {
+    if (status === 404) {
       this.response = new Response('Ok', status, 'Menu item Not available', '');
       // console.log(response, status);
     } else {
@@ -71,7 +71,7 @@ export default class MenuController {
     const updateData = new Menu(menuid, name, price, quantity, type, new Date());
 
     const menuFound = this.mapMenuList.get(menuid);
-    const status = (menuFound === undefined) ? 204 : 201;
+    const status = (menuFound === undefined) ? 400 : 201;
     // update if the menu object
     if (status === 201) {
       this.mapMenuList.set(updateData.menuId, updateData);
@@ -89,6 +89,6 @@ export default class MenuController {
   deleteMenu(req) {
     const { menuid } = req.params;
     // res.status((this.mapMenuList.delete(menuid)) ? 201 : 204).end();
-    return (this.mapMenuList.delete(menuid)) ? 201 : 204;
+    return (this.mapMenuList.delete(menuid)) ? 201 : 400;
   }
 }

@@ -47,7 +47,7 @@ describe('POST /orders', () => {
   it('saves a new order(Empty order)', (done) => {
     request.post('/api/v1/orders')
       .send({})
-      .expect(204)
+      .expect(400)
       .end((err) => {
         done(err);
       });
@@ -71,7 +71,7 @@ describe('PUT /orders', () => {
       .send({
         orderStatus: 'accepted',
       })
-      .expect(204)
+      .expect(400)
       .end((err) => {
         done(err);
       });
@@ -89,7 +89,7 @@ describe('DELETE /orders', () => {
   });
   it('Delete an existing order (Order doesnt exist)', (done) => {
     request.delete('/api/v1/orders/1224532322')
-      .expect(204)
+      .expect(400)
       .end((err) => {
         done(err);
       });

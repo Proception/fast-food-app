@@ -22,7 +22,7 @@ describe('GET /menus', () => {
   });
   it('gets a menu based on menuid(menu doesnt exist)', (done) => {
     request.get('/api/v1/menus/122222')
-      .expect(204)
+      .expect(404)
       .end((err) => {
         done(err);
       });
@@ -47,7 +47,7 @@ describe('POST /menus', () => {
   it('Fails to create a new menu if json is empty', (done) => {
     request.post('/api/v1/menus')
       .send({})
-      .expect(204)
+      .expect(400)
       .end((err) => {
         done(err);
       });
@@ -77,7 +77,7 @@ describe('PUT /menus', () => {
         quantity: 4,
         type: 'asasasasasa',
       })
-      .expect(204)
+      .expect(400)
       .end((err) => {
         done(err);
       });
@@ -95,7 +95,7 @@ describe('DELETE /menu', () => {
   });
   it('Delete an existing menu (Menu doesnt exist)', (done) => {
     request.delete('/api/v1/menus/12121212121')
-      .expect(204)
+      .expect(400)
       .end((err) => {
         done(err);
       });
