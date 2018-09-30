@@ -46,9 +46,9 @@ export default class UserController {
     // console.log('parameter : ', email);
     const userFound = this.mapUserList.get(email);
     // console.log('Found : ', userFound);
-    const status = (userFound === undefined) ? 404 : 200;
+    const status = (userFound === undefined) ? 400 : 200;
 
-    if (status === 404) {
+    if (status === 400) {
       this.response = new Response('ok', status, 'User Doesnt Exist', '');
     } else {
       this.response = new Response('ok', status, '', userFound);
