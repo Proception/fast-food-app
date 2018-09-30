@@ -47,9 +47,9 @@ export default class MenuController {
     const { menuid } = req.params;
     const menuFound = this.mapMenuList.get(menuid);
 
-    const status = (menuFound === undefined) ? 404 : 200;
+    const status = (menuFound === undefined) ? 400 : 200;
 
-    if (status === 404) {
+    if (status === 400) {
       this.response = new Response('Ok', status, 'Menu item Not available', '');
       // console.log(response, status);
     } else {

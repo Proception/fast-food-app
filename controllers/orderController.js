@@ -49,7 +49,7 @@ export default class OrderController {
     const { id } = req.params;
     const orderFound = this.mapOrderList.get(id);
     // console.log('Found : ', orderFound);
-    const status = (orderFound === undefined) ? 204 : 200;
+    const status = (orderFound === undefined) ? 400 : 200;
     if (status === 200) {
       this.response = new Response('Ok', status, '', orderFound);
       // console.log(response, status);

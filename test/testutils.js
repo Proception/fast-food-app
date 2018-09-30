@@ -1,6 +1,10 @@
 import { describe, it } from 'mocha';
 import chai from 'chai';
+import supertest from 'supertest';
 import { jsonIsEmpty as validate } from '../utils/validate';
+import app from '../app';
+
+const request = supertest(app);
 
 const { expect } = chai;
 
@@ -28,5 +32,14 @@ describe('validate JSON', () => {
   it('Returns True if array is entered', (done) => {
     expect(validate('{a: 1}')).to.equal(true);
     done();
+  });
+});
+describe('Test Suite for Fallback Route', () => {
+  it('Returns 404 if url is invalid', (done) => {
+    request.get('/api/v1/order')
+      .expect(404)
+      .end((err) => {
+        done(err);
+      });
   });
 });

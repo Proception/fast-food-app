@@ -22,7 +22,7 @@ describe('GET /orders', () => {
   });
   it('gets an order based on ID(Order doesn exist)', (done) => {
     request.get('/api/v1/orders/12245323')
-      .expect(204)
+      .expect(400)
       .end((err) => {
         done(err);
       });
