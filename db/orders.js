@@ -20,7 +20,7 @@ module.exports = {
   	const query = {
 	  // give the query a unique name
 	  name: 'fetch-user-orders',
-	  text: 'SELECT * FROM public.orders WHERE order_id = $1',
+	  text: 'SELECT * FROM public.orders WHERE user_id = $1',
 	  values: [user_id]
 	};
     return query;

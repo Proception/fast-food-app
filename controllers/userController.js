@@ -1,6 +1,8 @@
 import User from '../models/users';
 import Response from '../models/response';
 import { jsonIsEmpty as validate } from '../utils/validate';
+import userdb from '../db/index';
+import orderquery from '../db/orders';
 
 export default class UserController {
   constructor(response, mapUserList) {
@@ -52,6 +54,23 @@ export default class UserController {
       this.response = new Response('ok', status, 'User Doesnt Exist', '');
     } else {
       this.response = new Response('ok', status, '', userFound);
+    }
+    // res.status(status).send(response).end();
+    return this.response;
+  }
+
+  // Get single User Order by email
+  async getUserOrders(req) {
+    const { email } = req.params;
+    console.log('parameter : ', email);
+    const orders = await userdb.query(orderquery.userOrder(email));
+    console.log('Found : ', orders);
+    const status = (orders.rowCount === 0) ? 400 : 200;
+
+    if (status === 400) {
+      this.response = new Response('ok', status, 'There are no previous orders for user', '');
+    } else {
+      this.response = new Response('ok', status, '', orders.rows);
     }
     // res.status(status).send(response).end();
     return this.response;
