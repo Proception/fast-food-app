@@ -43,13 +43,13 @@ router.get('/:email/orders', async (req, res) => {
   res.status(resObj.code).json(resObj);
 });
 
-// POST request for posting data
-router.post('/', (req, res) => {
-  // console.log("Without : ", users.createUser(req, res));
-  const resObj = users.createUser(req, res);
-  // console.log(resObj);
-  res.status(resObj.code).json(resObj);
-});
+// // POST request for posting data
+// router.post('/', (req, res) => {
+//   // console.log("Without : ", users.createUser(req, res));
+//   const resObj = users.createUser(req, res);
+//   // console.log(resObj);
+//   res.status(resObj.code).json(resObj);
+// });
 
 // PUT request for updating a single user
 router.put('/:email', (req, res) => {
