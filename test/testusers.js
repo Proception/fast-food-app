@@ -32,6 +32,39 @@ describe('Test Suite POST /users', () => {
         done(err);
       });
   });
+  it('Login, User exists, invalid credentials', (done) => {
+    request.post('/api/v1/auth/login')
+      .send({
+        email: 'omasan.esimaje@gmail.com',
+        password: 'mypassword',
+      })
+      .expect(401)
+      .end((err) => {
+        done(err);
+      });
+  });
+  it('Login, User doesnt exist', (done) => {
+    request.post('/api/v1/auth/login')
+      .send({
+        email: 'omasan.esimaje@il.com',
+        password: 'mypassword',
+      })
+      .expect(400)
+      .end((err) => {
+        done(err);
+      });
+  });
+  it('Login, User credentials success', (done) => {
+    request.post('/api/v1/auth/login')
+      .send({
+        email: 'omasan.esimaje@gmail.com',
+        password: 'bene',
+      })
+      .expect(200)
+      .end((err) => {
+        done(err);
+      });
+  });
 });
 
 // Testing the GET a single user based on email expecting status 201 of success

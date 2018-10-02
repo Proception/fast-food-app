@@ -24,6 +24,34 @@ export default class UserController {
     return this.response;
   }
 
+  async loginUser(req) {
+    const {
+      email, password,
+    } = req.body;
+
+    const user = await db.query(userquery.queryUser(email));
+
+    if (user.rowCount === 1){
+      const isSame = await bcrypt.compare(password, user.rows[0].password);
+      // console.log('isSame ? :', isSame);
+      const userObj = user.rows[0];
+
+      if(isSame){
+        delete userObj.password;
+        delete userObj.dateCreated;
+        this.response = new Response('ok', 200, 'User has successfully logged in', userObj);
+      }else{
+        this.response = new Response('ok', 401, 'Credentials are incorrect', email);
+      }
+    }else{
+
+      this.response = new Response('ok', 400, 'User doesnt exists, consider registering', email);
+
+    }
+
+    return this.response;
+  }
+
   // Create New User.
   async createUser(req) {
     // Get POST params
