@@ -35,8 +35,8 @@ describe('Test Suite POST /users', () => {
   it('Login, User exists, invalid credentials', (done) => {
     request.post('/api/v1/auth/login')
       .send({
-        email: 'omasan.esimaje@ail.com',
-        password: 'mypassword',
+        email: 'omasan.esimaje@gmail.com',
+        password: 'mypa',
       })
       .expect(401)
       .end((err) => {
