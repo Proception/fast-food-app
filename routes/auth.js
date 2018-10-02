@@ -17,13 +17,13 @@ const mapUserList = new Map([[user.email, user], [user1.email, user1],
 
 const users = new UserController(response, mapUserList);
 
-// GET request for returning user based on email
-// router.post('/login', async (req, res) => {
-//   // console.log("Without : ", users.getUserOrders(req, res));
-//   const resObj = await users.getUserOrders(req, res);
-//   // console.log(resObj);
-//   res.status(resObj.code).json(resObj);
-// });
+//GET request for returning user based on email
+router.post('/login', async (req, res) => {
+  // console.log("login : ", req.body);
+  const resObj = await users.loginUser(req, res);
+  // console.log(resObj);
+  res.status(resObj.code).json(resObj);
+});
 
 // POST request for posting data
 router.post('/signup', async (req, res) => {
