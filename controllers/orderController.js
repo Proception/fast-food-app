@@ -2,6 +2,8 @@ import uuid from 'uuid/v4';
 import Order from '../models/orders';
 import Response from '../models/response';
 import { jsonIsEmpty as validate } from '../utils/validate';
+import orderdb from '../db/index';
+import orderquery from '../db/orders';
 // const validate = require('../utils/validate');
 
 export default class OrderController {
@@ -11,16 +13,17 @@ export default class OrderController {
     this.mapOrderList = mapOrderList;
   }
 
-  getOrderList() {
+  async getOrderList() {
     const status = 200;
-    this.response = new Response('Ok', status, '', this.mapOrderList);
-    // console.log(response, status);
-    // res.status(status).send(response);
-    return this.response;
+    const response = await orderdb.query(orderquery.queryAllOrders())
+    .then(data => { return this.response = new Response('Ok', status, '', data.rows); } );
+
+    return response;
   }
 
+
   // Create New Order.
-  createOrder(req) {
+  async createOrder(req) {
     // Get POST params
     const json = req.body;
     let status;
@@ -28,16 +31,18 @@ export default class OrderController {
 
     // Populate List in Memory if object is not empty
     if (!(validate(json))) {
-      const newOrder = new Order(uuid(), new Date(),
-        json.orderAmount, json.orderStatus,
-        json.shippingAddress, json.menu, json.userId);
-      this.mapOrderList.set(newOrder.orderId, newOrder);
+
       status = 201;
-      this.response = new Response('Ok', status, '', newOrder);
+      const response = await orderdb.query(orderquery.createOrder(uuid(), new Date(), json.orderAmount, 'New', json.shippingAddress, json.userId));
+      
+      // console.log('rowCount', response.rowCount);
+        // .then(data => { return this.response = new Response('Ok', status, '', data.rows); } )
+        // .catch( data => {return this.response = new Response('Not Okay', 400, 'Unable To Create Order', json)}));
+      this.response = new Response('Ok', status, '', json);
       // console.log(response, status);
     } else {
       status = 400;
-      this.response = new Response('NOK', status, 'Unable To Create Order', json);
+      this.response = new Response('Not OK', status, 'Unable To Create Order', json);
       // console.log(response, status);
     }
     // res.status(status).send(response).end();
@@ -45,48 +50,53 @@ export default class OrderController {
   }
 
   // Get single Order by Id
-  getOrder(req) {
+  async getOrder(req) {
     const { id } = req.params;
-    const orderFound = this.mapOrderList.get(id);
-    // console.log('Found : ', orderFound);
-    const status = (orderFound === undefined) ? 400 : 200;
+    const orderFound = await orderdb.query(orderquery.queryOrder(id));
+    // console.log('Found : ', orderFound.rows);
+    const status = (orderFound.rows.length === 0) ? 400 : 200;
     if (status === 200) {
-      this.response = new Response('Ok', status, '', orderFound);
+      this.response = new Response('Ok', status, '', orderFound.rows);
       // console.log(response, status);
     } else {
       this.response = new Response('Ok', status, 'Order does not Exist', '');
       // console.log(response, status);
     }
-    // res.status(status).send(response).end();
     return this.response;
   }
 
   // Update Order by Id
-  updateOrder(req) {
+  async updateOrder(req) {
     const { id } = req.params;
     // Get params in body
     const { orderStatus } = req.body;
-    const orderFound = this.mapOrderList.get(id);
-    const status = (orderFound === undefined) ? 400 : 201;
+    const orderFound = await orderdb.query(orderquery.queryOrder(id));
+
+    const status = (orderFound.rowCount === 0) ? 400 : await orderdb.query(orderquery.updateOrder(id, orderStatus));
+
+    // console.log("orderFound :", orderFound);
     // Set status
-    if (status === 201) {
+    if (status.rowCount === 1) {
+
+      // console.log('rowCount', status.rowCount);
+
       orderFound.orderStatus = orderStatus;
-      this.mapOrderList.set(orderFound.orderId, orderFound);
-      this.response = new Response('Ok', status, '', orderFound);
+      this.response = new Response('Ok', 201, '', orderFound.rows[0]);
       // console.log(response, status);
     } else {
-      this.response = new Response('NOK', status, 'Order Does not exist', '');
+      this.response = new Response('Not Ok', status, 'Order Does not exist', '');
       // console.log(response, status);
     }
-    // res.status(status).send(response).end();
     return this.response;
   }
 
   // delete Order by Id
-  deleteOrder(req) {
+  async deleteOrder(req) {
     const { id } = req.params;
-    const status = (this.mapOrderList.delete(id)) ? 201 : 400;
-    // res.status(status).end();
+    const { rowCount } = await orderdb.query(orderquery.deleteOrder(id));
+
+    console.log('rowCount ', rowCount);
+    const status = rowCount === 1 ? 201 : 400;
     return status;
   }
 }

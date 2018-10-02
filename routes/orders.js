@@ -28,42 +28,47 @@ let response;
 const mapOrderList = new Map([[order.orderId, order], [order1.orderId, order1],
   [order2.orderId, order2], [order3.orderId, order3]]);
 
+// const orderdb = new OrderDB();
+
+// console.log("orderdb obj", orderdb.getAllOrders, "order controllers", OrderController);
+
 const orders = new OrderController(response, mapOrderList);
 
 // GET request for returning all orders
-router.get('/', (req, res) => {
-  const respObj = orders.getOrderList();
-  // console.log(resObj);
-  res.status(respObj.code).json(respObj);
+router.get('/', async (req, res) => {
+  // console.log('query',query);
+  const resObj = await orders.getOrderList();
+
+  res.status(resObj.code).json(resObj);
 });
 
 // GET request for returning order based on id
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   // console.log("Without : ", orders.getOrder(req, res));
-  const resObj = orders.getOrder(req, res);
+  const resObj = await orders.getOrder(req, res);
   // console.log(resObj);
   res.status(resObj.code).json(resObj);
 });
 // POST request for posting data
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   // console.log("Without : ", orders.createOrder(req, res));
-  const resObj = orders.createOrder(req, res);
+  const resObj = await orders.createOrder(req, res);
   // console.log(resObj);
   res.status(resObj.code).json(resObj);
 });
 
 // PUT request for returning all orders
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
   // console.log("Without : ", orders.updateOrder(req, res));
-  const resObj = orders.updateOrder(req, res);
+  const resObj = await orders.updateOrder(req, res);
   // console.log(resObj);
   res.status(resObj.code).json(resObj);
 });
 
 // DELETE request to Delete order by ID
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   // console.log("Without : ", orders.deleteOrder(req, res));
-  const status = orders.deleteOrder(req, res);
+  const status = await orders.deleteOrder(req, res);
   // console.log(resObj);
   res.status(status).json();
 });

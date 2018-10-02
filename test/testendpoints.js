@@ -14,7 +14,7 @@ describe('GET /orders', () => {
       });
   });
   it('gets an order based on ID', (done) => {
-    request.get('/api/v1/orders/12245')
+    request.get('/api/v1/orders/dsdssddfsfdfsfsfdfsf')
       .expect(200)
       .end((err) => {
         done(err);
@@ -34,9 +34,8 @@ describe('POST /orders', () => {
   it('saves a new order', (done) => {
     request.post('/api/v1/orders')
       .send({
-        orderNo: '2323',
         orderAmount: 900000,
-        orderStatus: 'New',
+        userId: 'omasan.esimaje@gmail.com',
         shippingAddress: '16, ayoade str, shomolu',
       })
       .expect(201)
@@ -57,9 +56,9 @@ describe('POST /orders', () => {
 // Testing the Update a single order based on Id expecting status 201 of success
 describe('PUT /orders', () => {
   it('Updates Status of an existing order', (done) => {
-    request.put('/api/v1/orders/12245')
+    request.put('/api/v1/orders/dsdssddfsfdfsfsfdfsf')
       .send({
-        orderStatus: 'accepted',
+        orderStatus: 'Processing',
       })
       .expect(201)
       .end((err) => {
@@ -80,13 +79,13 @@ describe('PUT /orders', () => {
 
 // Testing the Delete a single order based on Id expecting status 201 of success
 describe('DELETE /orders', () => {
-  it('Delete an existing order', (done) => {
-    request.delete('/api/v1/orders/12245')
-      .expect(201)
-      .end((err) => {
-        done(err);
-      });
-  });
+  // it('Delete an existing order', (done) => {
+  //   request.delete('/api/v1/orders/98203073-17d3-4b66-8758-aa2de2f7a90a')
+  //     .expect(201)
+  //     .end((err) => {
+  //       done(err);
+  //     });
+  // });
   it('Delete an existing order (Order doesnt exist)', (done) => {
     request.delete('/api/v1/orders/1224532322')
       .expect(400)
