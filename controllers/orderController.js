@@ -95,7 +95,7 @@ export default class OrderController {
     const { id } = req.params;
     const { rowCount } = await orderdb.query(orderquery.deleteOrder(id));
 
-    console.log('rowCount ', rowCount);
+    // console.log('rowCount ', rowCount);
     const status = rowCount === 1 ? 201 : 400;
     return status;
   }
