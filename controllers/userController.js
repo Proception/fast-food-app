@@ -49,14 +49,13 @@ export default class UserController {
         ),
       );
       if (success.rowCount === 1) {
-        newUser.password = '';
+        delete newUser.password;
         this.response = new Response('ok', status, 'New user Created', newUser);
       }
     } else {
-      newUser.password = '';
+      delete newUser.password;
       this.response = new Response('ok', status, 'User Already Exists, Consider Logging In', newUser);
     }
-    // res.status(status).send(response).end();
     return this.response;
   }
 
@@ -90,7 +89,6 @@ export default class UserController {
     } else {
       this.response = new Response('ok', status, '', orders.rows);
     }
-    // res.status(status).send(response).end();
     return this.response;
   }
 
@@ -120,7 +118,6 @@ export default class UserController {
     } else {
       this.response = new Response('ok', status, 'User Update failed', updatedData);
     }
-    // res.status(status).send(response).end();
     return this.response;
   }
 

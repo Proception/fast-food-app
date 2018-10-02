@@ -29,7 +29,6 @@ const users = new UserController(response, mapUserList);
 router.post('/signup', async (req, res) => {
   // console.log("Without : ", users.createUser(req, res));
   const resObj = await users.createUser(req, res);
-  // console.log(resObj);
   res.status(resObj.code).json(resObj);
 });
 export default router;
