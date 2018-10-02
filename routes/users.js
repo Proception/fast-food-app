@@ -35,6 +35,14 @@ router.get('/:email', (req, res) => {
   res.status(resObj.code).json(resObj);
 });
 
+// GET request for returning user based on email
+router.get('/:email/orders', async (req, res) => {
+  // console.log("Without : ", users.getUserOrders(req, res));
+  const resObj = await users.getUserOrders(req, res);
+  // console.log(resObj);
+  res.status(resObj.code).json(resObj);
+});
+
 // POST request for posting data
 router.post('/', (req, res) => {
   // console.log("Without : ", users.createUser(req, res));

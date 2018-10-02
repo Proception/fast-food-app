@@ -7,7 +7,7 @@
     "lint": "./node_modules/.bin/eslint .",
     "lintfix": "./node_modules/.bin/eslint . --fix",
     "start": "babel-node app.js --presets es2015",
-    "test": "_mocha --require babel-core/register --exit",
+    "test": "_mocha --timeout 10000 --require babel-core/register --exit",
     "cc-coverage": "nyc report --reporter=lcov",
     "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
   },
@@ -30,6 +30,8 @@
     "body-parser": "^1.18.3",
     "eslint-config-airbnb": "^17.1.0",
     "express": "^4.16.3",
+    "express-promise-router": "^3.0.3",
+    "pg": "^7.4.3",
     "uuid": "^3.3.2"
   },
   "devDependencies": {

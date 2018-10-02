@@ -5,7 +5,7 @@ import app from '../app';
 const request = supertest(app);
 
 // Testing the save User expecting status 201 of success
-describe('POST /users', () => {
+describe('Test Suite POST /users', () => {
   it('Creates a new user', (done) => {
     request.post('/api/v1/users')
       .send({
@@ -35,7 +35,7 @@ describe('POST /users', () => {
 });
 
 // Testing the GET a single user based on email expecting status 201 of success
-describe('GET /users', () => {
+describe('Test Suite GET /users', () => {
   it('returns a list of users', (done) => {
     request.get('/api/v1/users')
       .expect(200)
@@ -52,7 +52,21 @@ describe('GET /users', () => {
   });
   it('gets a user based on Email(users doesn exist)', (done) => {
     request.get('/api/v1/users/omasan.esimaje@gmail.ccc')
-      .expect(404)
+      .expect(400)
+      .end((err) => {
+        done(err);
+      });
+  });
+  it('gets a users orders based on Email', (done) => {
+    request.get('/api/v1/users/omasan.esimaje@gmail.com/orders')
+      .expect(200)
+      .end((err) => {
+        done(err);
+      });
+  });
+  it('gets a users orders based on Email(users do not exist)', (done) => {
+    request.get('/api/v1/users/omasan.esimaje@gmail.ccc/orders')
+      .expect(400)
       .end((err) => {
         done(err);
       });
@@ -61,7 +75,7 @@ describe('GET /users', () => {
 
 
 // Testing the Update a single user based on email expecting status 201 of success
-describe('PUT /users', () => {
+describe('Test Suite PUT /users', () => {
   it('Updates details of an existing user', (done) => {
     request.put('/api/v1/users/omasan.esimaje@gmail.com')
       .send({
@@ -90,8 +104,9 @@ describe('PUT /users', () => {
   });
 });
 
+
 // Testing the Delete a single user based on email expecting status 201 of success
-describe('DELETE /users', () => {
+describe('Test Suite DELETE /users', () => {
   it('Delete an existing user', (done) => {
     request.delete('/api/v1/users/omasan.esimaje@gmail.com')
       .expect(202)

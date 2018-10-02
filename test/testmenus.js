@@ -22,7 +22,7 @@ describe('GET /menus', () => {
   });
   it('gets a menu based on menuid(menu doesnt exist)', (done) => {
     request.get('/api/v1/menus/122222')
-      .expect(404)
+      .expect(400)
       .end((err) => {
         done(err);
       });
