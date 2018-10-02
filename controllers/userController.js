@@ -1,8 +1,14 @@
+import bcrypt from 'bcrypt';
 import User from '../models/users';
 import Response from '../models/response';
 import { jsonIsEmpty as validate } from '../utils/validate';
-import userdb from '../db/index';
+import db from '../db/index';
 import orderquery from '../db/orders';
+import userquery from '../db/users';
+
+const roleId = 2;
+
+// const bcrypt = require('bcrypt');
 
 export default class UserController {
   constructor(response, mapUserList) {
@@ -19,23 +25,35 @@ export default class UserController {
   }
 
   // Create New User.
-  createUser(req) {
+  async createUser(req) {
     // Get POST params
     const {
       email, phoneNo, fullName, password,
     } = req.body;
 
-    const newUser = new User(email, fullName,
-      phoneNo, password);
+    const hashedPassword = bcrypt.hashSync(password, 10);
 
-    const userFound = this.mapUserList.get(email);
-    const status = (userFound === undefined) ? 201 : 409;
+    const newUser = new User(email, fullName,
+      phoneNo, hashedPassword, new Date(), roleId);
+
+    const userFound = await db.query(userquery.queryUser(email));
+    const status = (userFound.rowCount === 1) ? 409 : 201;
 
     // Populate List in Memory if object is not empty
     if (!(validate(newUser)) && status === 201) {
-      this.mapUserList.set(newUser.email, newUser);
-      this.response = new Response('ok', status, 'New user Created', newUser);
+      const success = await db.query(
+        userquery.createUser(
+          newUser.email, newUser.fullName,
+          newUser.phoneNo, newUser.password,
+          newUser.dateCreated, newUser.roleId,
+        ),
+      );
+      if (success.rowCount === 1) {
+        newUser.password = '';
+        this.response = new Response('ok', status, 'New user Created', newUser);
+      }
     } else {
+      newUser.password = '';
       this.response = new Response('ok', status, 'User Already Exists, Consider Logging In', newUser);
     }
     // res.status(status).send(response).end();
@@ -63,7 +81,7 @@ export default class UserController {
   async getUserOrders(req) {
     const { email } = req.params;
     // console.log('parameter : ', email);
-    const orders = await userdb.query(orderquery.userOrder(email));
+    const orders = await db.query(orderquery.userOrder(email));
     // console.log('Found : ', orders);
     const status = (orders.rowCount === 0) ? 400 : 200;
 

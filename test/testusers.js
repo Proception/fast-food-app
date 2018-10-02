@@ -7,9 +7,9 @@ const request = supertest(app);
 // Testing the save User expecting status 201 of success
 describe('Test Suite POST /users', () => {
   it('Creates a new user', (done) => {
-    request.post('/api/v1/users')
+    request.post('/api/v1/auth/signup')
       .send({
-        email: 'oma32323.esimaje@gmail.com',
+        email: 'oma32323.esmaje@gmail.com',
         fullName: 'Benedict Esimaje',
         phoneNo: '07062257273',
         password: 'mypassword',
@@ -20,7 +20,7 @@ describe('Test Suite POST /users', () => {
       });
   });
   it('if user already exists do not create', (done) => {
-    request.post('/api/v1/users')
+    request.post('/api/v1/auth/signup')
       .send({
         email: 'omasan.esimaje@gmail.com',
         fullName: 'Benedict Esimaje',
