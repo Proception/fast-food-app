@@ -1,5 +1,4 @@
 import uuid from 'uuid/v4';
-import Order from '../models/orders';
 import Response from '../models/response';
 import { jsonIsEmpty as validate } from '../utils/validate';
 import orderdb from '../db/index';
@@ -16,7 +15,7 @@ export default class OrderController {
   async getOrderList() {
     const status = 200;
     const response = await orderdb.query(orderquery.queryAllOrders())
-    .then(data => { return this.response = new Response('Ok', status, '', data.rows); } );
+      .then(data => this.response = new Response('Ok', status, '', data.rows));
 
     return response;
   }
@@ -31,13 +30,14 @@ export default class OrderController {
 
     // Populate List in Memory if object is not empty
     if (!(validate(json))) {
-
       status = 201;
-      const response = await orderdb.query(orderquery.createOrder(uuid(), new Date(), json.orderAmount, 'New', json.shippingAddress, json.userId));
-      
-      // console.log('rowCount', response.rowCount);
-        // .then(data => { return this.response = new Response('Ok', status, '', data.rows); } )
-        // .catch( data => {return this.response = new Response('Not Okay', 400, 'Unable To Create Order', json)}));
+      // const response =
+      await orderdb.query(
+        orderquery.createOrder(
+          uuid(), new Date(), json.orderAmount, 'New', json.shippingAddress, json.userId,
+        ),
+      );
+
       this.response = new Response('Ok', status, '', json);
       // console.log(response, status);
     } else {
@@ -72,12 +72,13 @@ export default class OrderController {
     const { orderStatus } = req.body;
     const orderFound = await orderdb.query(orderquery.queryOrder(id));
 
-    const status = (orderFound.rowCount === 0) ? 400 : await orderdb.query(orderquery.updateOrder(id, orderStatus));
+    const status = (orderFound.rowCount === 0) ? 400 : await orderdb.query(
+      orderquery.updateOrder(id, orderStatus),
+    );
 
     // console.log("orderFound :", orderFound);
     // Set status
     if (status.rowCount === 1) {
-
       // console.log('rowCount', status.rowCount);
 
       orderFound.orderStatus = orderStatus;
@@ -97,6 +98,11 @@ export default class OrderController {
 
     // console.log('rowCount ', rowCount);
     const status = rowCount === 1 ? 201 : 400;
+    if (status === 201) {
+      this.response = new Response('Ok', status, 'Order has been successfully deleted', id);
+    } else {
+      this.response = new Response('Not Ok', status, 'Order Does not exist', '');
+    }
     return status;
   }
 }

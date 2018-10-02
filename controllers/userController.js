@@ -62,9 +62,9 @@ export default class UserController {
   // Get single User Order by email
   async getUserOrders(req) {
     const { email } = req.params;
-    console.log('parameter : ', email);
+    // console.log('parameter : ', email);
     const orders = await userdb.query(orderquery.userOrder(email));
-    console.log('Found : ', orders);
+    // console.log('Found : ', orders);
     const status = (orders.rowCount === 0) ? 400 : 200;
 
     if (status === 400) {
