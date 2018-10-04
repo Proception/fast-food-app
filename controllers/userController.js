@@ -54,7 +54,7 @@ export default class UserController {
         this.response = new Response('ok', 401, 'Credentials are incorrect', email);
       }
     } else {
-      this.response = new Response('ok', 400, 'User doesnt exists, consider registering', email);
+      this.response = new Response('ok', 400, 'User doesn\'t exist, consider registering', email);
     }
 
     return this.response;
@@ -87,7 +87,8 @@ export default class UserController {
       );
 
       delete newUser.password;
-      this.response = new Response('ok', status, 'New user Created', newUser);
+      const token = jwt.sign(JSON.parse(JSON.stringify(newUser)), 'test', { expiresIn: 86400 });
+      this.response = new Response('ok', status, 'New user Created', token);
     } else {
       delete newUser.password;
       this.response = new Response('ok', status, 'User Already Exists, Consider Logging In', newUser);
@@ -101,9 +102,9 @@ export default class UserController {
     token =  checkrole(token);
 
     if (token === 3) {
-      const { email } = req.params;
+      const { id } = req.params;
       // console.log('parameter : ', email);
-      const userFound = await db.query(userquery.queryUser(email));
+      const userFound = await db.query(userquery.queryUserId(id));
       // console.log('Found : ', userFound);
       const status = (userFound.rowCount === 0) ? 400 : 200;
 
@@ -127,9 +128,9 @@ export default class UserController {
     const token = verifyjwt(req.headers['x-access-token'], '');
 
     if (token === 3) {
-      const { email } = req.params;
+      const { id } = req.params;
       // console.log('parameter : ', email);
-      const orders = await db.query(orderquery.userOrder(email));
+      const orders = await db.query(orderquery.userOrderId(id));
       // console.log('Found : ', orders);
       const status = (orders.rowCount === 0) ? 400 : 200;
 
@@ -152,17 +153,17 @@ export default class UserController {
     token =  checkrole(token);
 
     if (token === 3) {
-      const { email } = req.params;
+      const { id } = req.params;
       // Get params in body
       const { roleId } = req.body;
-      const userFound = await db.query(userquery.updateUser(email, roleId));
+      const userFound = await db.query(userquery.updateUser(id, roleId));
       const status = (userFound.rowCount === 0) ? 400 : 200;
 
       // console.log(status)
       if (status === 200) {
-        this.response = new Response('ok', status, 'User Role Successfully updated', email);
+        this.response = new Response('ok', status, 'User Role Successfully updated', id);
       } else {
-        this.response = new Response('ok', status, 'User Doesnt exist', email);
+        this.response = new Response('ok', status, 'User Doesnt exist', id);
       }
     } else if (token === 2) {
       this.response = new Response('ok', 401, 'You are not authorized to access this route', '');
