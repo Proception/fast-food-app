@@ -1,6 +1,7 @@
 import uuid from 'uuid/v4';
 import verifyjwt from '../utils/verifyJwt';
 import Menu from '../models/menus';
+import checkrole from '../utils/checkrole';
 import Response from '../models/response';
 import { jsonIsEmpty as validate } from '../utils/validate';
 import db from '../db/index';
@@ -14,7 +15,7 @@ export default class MenuController {
   // Display list of all Menus.
   async getMenuList(req) {
     // const status = 200;
-    const token = verifyjwt(req.headers['x-access-token']);
+    const token = verifyjwt(req.headers['x-access-token'], '');
 
     if (token === 3) {
       const result = await db.query(menuquery.queryAllMenus());
@@ -30,7 +31,8 @@ export default class MenuController {
 
   // Create New Menu.
   async createMenu(req) {
-    const token = verifyjwt(req.headers['x-access-token']);
+    let token = verifyjwt(req.headers['x-access-token'], 'admin');
+    token =  checkrole(token);
 
     if (token === 3) {
       // Get POST params
@@ -65,7 +67,8 @@ export default class MenuController {
 
   // Get single menu by Id
   async getMenu(req) {
-    const token = verifyjwt(req.headers['x-access-token']);
+    let token = verifyjwt(req.headers['x-access-token'], 'admin');
+    token =  checkrole(token);
 
     if (token === 3) {
       const { menuid } = req.params;
@@ -88,7 +91,8 @@ export default class MenuController {
 
   // Update menu by Id
   async updateMenu(req) {
-    const token = verifyjwt(req.headers['x-access-token']);
+    let token = verifyjwt(req.headers['x-access-token'], 'admin');
+    token =  checkrole(token);
 
     if (token === 3) {
       const { menuid } = req.params;
@@ -117,7 +121,8 @@ export default class MenuController {
 
   // delete menu by menuid
   async deleteMenu(req) {
-    const token = verifyjwt(req.headers['x-access-token']);
+    let token = verifyjwt(req.headers['x-access-token'], 'admin');
+    token =  checkrole(token);
 
     if (token === 3) {
       const { menuid } = req.params;

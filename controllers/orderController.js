@@ -1,6 +1,7 @@
 import uuid from 'uuid/v4';
 import Response from '../models/response';
 import verifyjwt from '../utils/verifyJwt';
+import checkrole from '../utils/checkrole';
 import { jsonIsEmpty as validate } from '../utils/validate';
 import orderdb from '../db/index';
 import orderquery from '../db/orders';
@@ -13,7 +14,9 @@ export default class OrderController {
   }
 
   async getOrderList(req) {
-    const token = verifyjwt(req.headers['x-access-token']);
+    let token = verifyjwt(req.headers['x-access-token'], 'admin');
+    token =  checkrole(token);
+
     if (token === 3) {
       const status = 200;
       await orderdb.query(orderquery.queryAllOrders())
@@ -28,7 +31,7 @@ export default class OrderController {
 
   // Create New Order.
   async createOrder(req) {
-    const token = verifyjwt(req.headers['x-access-token']);
+    const token = verifyjwt(req.headers['x-access-token'], '');
     if (token === 3) {
       // Get POST params
       const json = req.body;
@@ -75,7 +78,9 @@ export default class OrderController {
 
   // Get single Order by Id
   async getOrder(req) {
-    const token = verifyjwt(req.headers['x-access-token']);
+    let token = verifyjwt(req.headers['x-access-token'], 'admin');
+    token =  checkrole(token);
+
     if (token === 3) {
       const { id } = req.params;
       const orderFound = await orderdb.query(orderquery.queryOrder(id));
@@ -100,7 +105,9 @@ export default class OrderController {
 
   // Update Order by Id
   async updateOrder(req) {
-    const token = verifyjwt(req.headers['x-access-token']);
+    let token = verifyjwt(req.headers['x-access-token'], 'admin');
+    token =  checkrole(token);
+
     if (token === 3) {
       const { id } = req.params;
       // Get params in body
@@ -133,7 +140,9 @@ export default class OrderController {
 
   // delete Order by Id
   async deleteOrder(req) {
-    const token = verifyjwt(req.headers['x-access-token']);
+    let token = verifyjwt(req.headers['x-access-token'], 'admin');
+    token =  checkrole(token);
+
     if (token === 3) {
       const { id } = req.params;
       const { rowCount } = await orderdb.query(orderquery.deleteOrder(id));

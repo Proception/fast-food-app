@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from '../models/users';
+import checkrole from '../utils/checkrole';
 import Response from '../models/response';
 import { jsonIsEmpty as validate } from '../utils/validate';
 import verifyjwt from '../utils/verifyJwt';
@@ -15,7 +16,8 @@ export default class UserController {
 
   // Display list of all Orders.
   async getUserList(req) {
-    const token = verifyjwt(req.headers['x-access-token']);
+    let token = verifyjwt(req.headers['x-access-token'], 'admin');
+    token =  checkrole(token);
 
     if (token === 3) {
       // console.log("result ",result);
@@ -64,7 +66,7 @@ export default class UserController {
     const {
       email, phoneNo, fullName, password,
     } = req.body;
-    const roleId = 2;
+    const roleId = 200;
 
     const hashedPassword = bcrypt.hashSync(password, 10);
 
@@ -95,7 +97,8 @@ export default class UserController {
 
   // Get single User by email
   async getUser(req) {
-    const token = verifyjwt(req.headers['x-access-token']);
+    let token = verifyjwt(req.headers['x-access-token'], 'admin');
+    token =  checkrole(token);
 
     if (token === 3) {
       const { email } = req.params;
@@ -121,7 +124,7 @@ export default class UserController {
 
   // Get single User Order by email
   async getUserOrders(req) {
-    const token = verifyjwt(req.headers['x-access-token']);
+    const token = verifyjwt(req.headers['x-access-token'], '');
 
     if (token === 3) {
       const { email } = req.params;
@@ -145,7 +148,8 @@ export default class UserController {
 
   // Update User by email
   async updateUser(req) {
-    const token = verifyjwt(req.headers['x-access-token']);
+    let token = verifyjwt(req.headers['x-access-token'], 'admin');
+    token =  checkrole(token);
 
     if (token === 3) {
       const { email } = req.params;
@@ -171,7 +175,8 @@ export default class UserController {
 
   // delete User by email
   async deleteUser(req) {
-    const token = verifyjwt(req.headers['x-access-token']);
+    let token = verifyjwt(req.headers['x-access-token'], 'admin');
+    token =  checkrole(token);
 
     if (token === 3) {
       const { email } = req.params;
