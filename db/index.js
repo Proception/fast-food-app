@@ -12,7 +12,7 @@ const connectionString = 'postgres://ugqbjscmkbgxak:45b67f7ecd7650e8514802034cca
 // postgresql://postgres:root@localhost:5432/fastfood
 
 const pool = new Pool({
-  // connectionString: 'postgresql://postgres:root@localhost:5432/fastfood' || process.env.DATABASE_URL,
+  // connectionString: 'postgresql://postgres:root@localhost:5432/fastfood',
   // ssl: true
   connectionString,
   ssl: true,

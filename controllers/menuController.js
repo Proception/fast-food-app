@@ -1,94 +1,141 @@
 import uuid from 'uuid/v4';
+import verifyjwt from '../utils/verifyJwt';
 import Menu from '../models/menus';
 import Response from '../models/response';
 import { jsonIsEmpty as validate } from '../utils/validate';
+import db from '../db/index';
+import menuquery from '../db/menus';
 
 export default class MenuController {
-  constructor(response, mapMenuList) {
+  constructor(response) {
     this.response = response;
-    this.mapMenuList = mapMenuList;
   }
 
   // Display list of all Menus.
-  getMenuList() {
-    const status = 200;
-    this.response = new Response('Ok', status, '', this.mapMenuList);
-    // res.status(status).send(this.response);
+  async getMenuList(req) {
+    // const status = 200;
+    const token = verifyjwt(req.headers['x-access-token']);
+
+    if (token === 3) {
+      const result = await db.query(menuquery.queryAllMenus());
+      // console.log("result ",result);
+      this.response = new Response('ok', 200, '', result.rows);
+    } else if (token === 2) {
+      this.response = new Response('ok', 401, 'You are not authorized to access this route', '');
+    } else {
+      this.response = new Response('ok', 400, 'Token verification failed', '');
+    }
     return this.response;
   }
 
   // Create New Menu.
-  createMenu(req) {
-    // Get POST params
-    const json = req.body;
-    let status;
+  async createMenu(req) {
+    const token = verifyjwt(req.headers['x-access-token']);
 
-
-    // Populate List in Memory if object is not empty
-    if (!(validate(json))) {
-      const newMenu = new Menu(uuid(), json.name,
-        json.price, json.quantity,
-        json.type, new Date());
-      this.mapMenuList.set(newMenu.menuId, newMenu);
-      status = 201;
-      this.response = new Response('Ok', status, '', newMenu);
-      // console.log(response, status);
+    if (token === 3) {
+      // Get POST params
+      const json = req.body;
+      let status;
+      // Populate List in Memory if object is not empty
+      if (!(validate(json))) {
+        const newMenu = new Menu(uuid(), json.name,
+          json.price, json.quantity,
+          json.type, new Date(), '', json.imgUrl);
+        await db.query(
+          menuquery.createMenu(
+            newMenu.menuId, newMenu.name,
+            newMenu.price, newMenu.quantity,
+            newMenu.type, newMenu.dateCreated,
+            newMenu.createdBy, newMenu.imgUrl,
+          ),
+        );
+        this.response = new Response('Ok', 201, 'Menu Creation was successful', newMenu);
+      } else {
+        status = 400;
+        this.response = new Response('NOK', status, 'Menu Creation Failed, due to incomplete request', json);
+      }
+    } else if (token === 2) {
+      this.response = new Response('ok', 401, 'You are not authorized to access this route', '');
     } else {
-      status = 400;
-      this.response = new Response('NOK', status, 'Menu Creation Failed', json);
-      // console.log(response, status);
+      this.response = new Response('ok', 400, 'Token verification failed', '');
     }
     // res.status(status).send(this.response).end();
     return this.response;
   }
 
   // Get single menu by Id
-  getMenu(req) {
-    const { menuid } = req.params;
-    const menuFound = this.mapMenuList.get(menuid);
+  async getMenu(req) {
+    const token = verifyjwt(req.headers['x-access-token']);
 
-    const status = (menuFound === undefined) ? 400 : 200;
-
-    if (status === 400) {
-      this.response = new Response('Ok', status, 'Menu item Not available', '');
-      // console.log(response, status);
+    if (token === 3) {
+      const { menuid } = req.params;
+      const menuFound = await db.query(menuquery.queryMenu(menuid));
+      const status = (menuFound.rowCount === 1) ? 200 : 400;
+      if (status === 400) {
+        this.response = new Response('Ok', status, 'Menu item Not available', '');
+        // console.log(response, status);
+      } else {
+        this.response = new Response('Ok', status, '', menuFound.rows[0]);
+        // console.log(response, status);
+      }
+    } else if (token === 2) {
+      this.response = new Response('ok', 401, 'You are not authorized to access this route', '');
     } else {
-      this.response = new Response('Ok', status, '', menuFound);
-      // console.log(response, status);
+      this.response = new Response('ok', 400, 'Token verification failed', '');
     }
-
     return this.response;
   }
 
   // Update menu by Id
-  updateMenu(req) {
-    const { menuid } = req.params;
-    // Get params in body
-    const {
-      name, price, quantity, type,
-    } = req.body;
+  async updateMenu(req) {
+    const token = verifyjwt(req.headers['x-access-token']);
 
-    const updateData = new Menu(menuid, name, price, quantity, type, new Date());
+    if (token === 3) {
+      const { menuid } = req.params;
+      // Get params in body
+      const {
+        price,
+      } = req.body;
 
-    const menuFound = this.mapMenuList.get(menuid);
-    const status = (menuFound === undefined) ? 400 : 201;
-    // update if the menu object
-    if (status === 201) {
-      this.mapMenuList.set(updateData.menuId, updateData);
-      this.response = new Response('Ok', status, '', updateData);
-      // console.log(response, status);
+      const menuFound = await db.query(menuquery.updateMenu(menuid, price));
+      const status = (menuFound.rowCount === 1) ? 201 : 400;
+      // update if the menu object
+      if (status === 201) {
+        this.response = new Response('Ok', status, 'Menu successfully updated', menuid);
+        // console.log(response, status);
+      } else {
+        this.response = new Response('Ok', status, 'Menu Updated failed', menuid);
+        // console.log(response, status);
+      }
+    } else if (token === 2) {
+      this.response = new Response('ok', 401, 'You are not authorized to access this route', '');
     } else {
-      this.response = new Response('Ok', status, 'Update failed', '');
-      // console.log(response, status);
+      this.response = new Response('ok', 400, 'Token verification failed', '');
     }
-    // res.status(status).send(this.response).end();
     return this.response;
   }
 
   // delete menu by menuid
-  deleteMenu(req) {
-    const { menuid } = req.params;
-    // res.status((this.mapMenuList.delete(menuid)) ? 201 : 204).end();
-    return (this.mapMenuList.delete(menuid)) ? 201 : 400;
+  async deleteMenu(req) {
+    const token = verifyjwt(req.headers['x-access-token']);
+
+    if (token === 3) {
+      const { menuid } = req.params;
+
+      const result = await db.query(menuquery.deleteMenu(menuid));
+
+      const status = (result.rowCount === 0) ? 400 : 202;
+      // console.log("status", status);
+      if (status === 202) {
+        this.response = new Response('ok', status, 'Menu successsfully deleted', menuid);
+      } else {
+        this.response = new Response('ok', status, 'Menu Doesnt exist', menuid);
+      }
+    } else if (token === 2) {
+      this.response = new Response('ok', 401, 'You are not authorized to access this route', '');
+    } else {
+      this.response = new Response('ok', 400, 'Token verification failed', '');
+    }
+    return this.response;
   }
 }
