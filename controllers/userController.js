@@ -130,7 +130,7 @@ export default class UserController {
     if (token === 3) {
       const { id } = req.params;
       // console.log('parameter : ', email);
-      const orders = await db.query(orderquery.userOrderId(id));
+      const orders = await db.query(orderquery.userOrder(id));
       // console.log('Found : ', orders);
       const status = (orders.rowCount === 0) ? 400 : 200;
 
@@ -156,7 +156,7 @@ export default class UserController {
       const { id } = req.params;
       // Get params in body
       const { roleId } = req.body;
-      const userFound = await db.query(userquery.updateUser(id, roleId));
+      const userFound = await db.query(userquery.updateUserId(id, roleId));
       const status = (userFound.rowCount === 0) ? 400 : 200;
 
       // console.log(status)

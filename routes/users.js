@@ -1,5 +1,6 @@
 // Require controller modules.
 import UserController from '../controllers/userController';
+import validateuser from '../utils/validateuser';
 
 const express = require('express');
 
@@ -18,16 +19,15 @@ router.get('/', async (req, res) => {
   res.status(resObj.code).json(resObj);
 });
 
-// GET request for returning user based on email
-router.get('/:email', async (req, res) => {
-  // console.log("Without : ", users.getUser(req, res));
+// GET request for returning user based on id
+router.get('/:id', async (req, res) => {
   const resObj = await users.getUser(req, res);
   // console.log(resObj);
   res.status(resObj.code).json(resObj);
 });
 
 // GET request for returning user based on email
-router.get('/:email/orders', async (req, res) => {
+router.get('/:id/orders', async (req, res) => {
   // console.log("Without : ", users.getUserOrders(req, res));
   const resObj = await users.getUserOrders(req, res);
   // console.log(resObj);
@@ -43,15 +43,15 @@ router.get('/:email/orders', async (req, res) => {
 // });
 
 // PUT request for updating a single user
-router.put('/:email', async (req, res) => {
+router.put('/:id', async (req, res) => {
   // console.log("Without : ", users.updateUser(req, res));
   const resObj = await users.updateUser(req, res);
   // console.log(resObj);
   res.status(resObj.code).json(resObj);
 });
 
-// DELETE request to Delete user by email
-router.delete('/:email', async (req, res) => {
+// DELETE request to Delete user by id
+router.delete('/:id', async (req, res) => {
   // console.log("Without : ", users.deleteUser(req, res));
   const resObj = await users.deleteUser(req, res);
   // console.log(resObj);

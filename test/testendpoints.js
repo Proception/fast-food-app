@@ -13,8 +13,11 @@ const orderId = uuid();
 
 let globaltoken;
 before('Setup DB', async () => {
+  await db.query(orderquery.queryDrop());
+  await db.query(orderquery.queryReset());
+
   const newOrder = new Order(orderId, new Date(),
-    300, 'New', 'test addd', 'omasan.menu@gmail.com');
+    300, 'New', 'test addd', '1');
   await db.query(
     orderquery.createOrder(
       newOrder.orderId, newOrder.orderDate,
@@ -31,7 +34,7 @@ before('Setup DB', async () => {
     // console.log("Ouside test globaltoken value 2 : ", globaltoken);
     request.post('/api/v1/auth/signup')
       .send({
-        email: 'omasan.menu@gmail.com',
+        email: 'omasan.order@gmail.com',
         fullName: 'Benedict Esimaje',
         phoneNo: '07062257273',
         password: 'mypassword',
@@ -44,7 +47,7 @@ before('Setup DB', async () => {
   it('Login, User credentials success', (done) => {
     request.post('/api/v1/auth/login')
       .send({
-        email: 'omasan.menu@gmail.com',
+        email: 'omasan.order@gmail.com',
         password: 'mypassword',
       })
       .expect(200)
@@ -122,7 +125,7 @@ describe('POST /orders', () => {
       .set('x-access-token', globaltoken)
       .send({
         orderAmount: 900000,
-        userId: 'omasan.esimaje@gmail.com',
+        userId: '1',
         shippingAddress: '16, ayoade str, shomolu',
         menu: [{"menuId": "0293582a-7fd7-45bc-8bdc-a9ab153919c0", "quantity": "4" }, 
         {"menuId": "e554bfb9-d2b9-43e7-9a98-63e562e9ff89","quantity": "2" }],
@@ -236,14 +239,6 @@ describe('DELETE /orders', () => {
     request.delete('/api/v1/orders/1224532322')
       .set('x-access-token', globaltoken)
       .expect(400)
-      .end((err) => {
-        done(err);
-      });
-  });
-  it('Delete an existing menu user', (done) => {
-    request.delete('/api/v1/users/omasan.menu@gmail.com')
-      .set('x-access-token', globaltoken)
-      .expect(202)
       .end((err) => {
         done(err);
       });

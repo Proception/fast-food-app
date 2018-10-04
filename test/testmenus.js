@@ -25,7 +25,7 @@ before('Setup DB', async () => {
     // console.log("Ouside test globaltoken value 2 : ", globaltoken);
     request.post('/api/v1/auth/signup')
       .send({
-        email: 'omasa.esimaje@gmail.com',
+        email: 'omasa.menu@gmail.com',
         fullName: 'Benedict Esimaje',
         phoneNo: '07062257273',
         password: 'mypassword',
@@ -38,7 +38,7 @@ before('Setup DB', async () => {
   it('Login, User credentials success', (done) => {
     request.post('/api/v1/auth/login')
       .send({
-        email: 'omasa.esimaje@gmail.com',
+        email: 'omasa.menu@gmail.com',
         password: 'mypassword',
       })
       .expect(200)
@@ -242,14 +242,6 @@ describe('DELETE /menu', () => {
     request.delete('/api/v1/menus/12121212121')
       .set('x-access-token', globaltoken)
       .expect(400)
-      .end((err) => {
-        done(err);
-      });
-  });
-  it('Delete an existing menu user', (done) => {
-    request.delete('/api/v1/users/omasa.esimaje@gmail.com')
-      .set('x-access-token', globaltoken)
-      .expect(202)
       .end((err) => {
         done(err);
       });
