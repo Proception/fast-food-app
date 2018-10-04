@@ -5,6 +5,7 @@ import Order from '../models/orders';
 import app from '../app';
 import db from '../db/index';
 import orderquery from '../db/orders';
+import ordermenusquery from '../db/order_menu';
 
 
 const request = supertest(app);
@@ -21,6 +22,11 @@ before('Setup DB', async () => {
       newOrder.shippingAddress, newOrder.userId,
     ),
   );
+  await db.query(
+    ordermenusquery.addOrderMenu(
+      uuid(), orderId, 2, 'sddfdsfsfsffsffdsfs'
+      )
+    );
   it('Creates a new user for orders ', (done) => {
     // console.log("Ouside test globaltoken value 2 : ", globaltoken);
     request.post('/api/v1/auth/signup')
@@ -118,6 +124,8 @@ describe('POST /orders', () => {
         orderAmount: 900000,
         userId: 'omasan.esimaje@gmail.com',
         shippingAddress: '16, ayoade str, shomolu',
+        menu: [{"menuId": "0293582a-7fd7-45bc-8bdc-a9ab153919c0", "quantity": "4" }, 
+        {"menuId": "e554bfb9-d2b9-43e7-9a98-63e562e9ff89","quantity": "2" }],
       })
       .expect(201)
       .end((err) => {

@@ -4,7 +4,7 @@ import verifyjwt from '../utils/verifyJwt';
 import { jsonIsEmpty as validate } from '../utils/validate';
 import orderdb from '../db/index';
 import orderquery from '../db/orders';
-// const validate = require('../utils/validate');
+import ordermenusquery from '../db/order_menu';
 
 export default class OrderController {
   // Display list of all Orders.
@@ -33,6 +33,7 @@ export default class OrderController {
       // Get POST params
       const json = req.body;
       let status;
+      const orderId = uuid();
 
 
       // Populate List in Memory if object is not empty
@@ -41,12 +42,22 @@ export default class OrderController {
         // const response =
         await orderdb.query(
           orderquery.createOrder(
-            uuid(), new Date(), json.orderAmount, 'New', json.shippingAddress, json.userId,
+            orderId, new Date(), json.orderAmount, 'New', json.shippingAddress, json.userId,
           ),
         );
-
         // menu persistence
-
+        if (json.menu !== undefined){
+          const menu = typeof json.menu[0] === "object" ? json.menu : JSON.parse(json.menu);
+          (menu).forEach(async (item) => {
+            // console.log('item ', item);
+          await orderdb.query(
+            ordermenusquery.addOrderMenu(
+              uuid(), orderId, item.quantity, item.menuId
+              )
+            );
+          });
+        }
+        json.orderId = orderId;
         this.response = new Response('Ok', status, '', json);
         // console.log(response, status);
       } else {
@@ -59,7 +70,6 @@ export default class OrderController {
     } else {
       this.response = new Response('ok', 400, 'Token verification failed', '');
     }
-    // res.status(status).send(response).end();
     return this.response;
   }
 
@@ -69,9 +79,11 @@ export default class OrderController {
     if (token === 3) {
       const { id } = req.params;
       const orderFound = await orderdb.query(orderquery.queryOrder(id));
+      const orderMenu = await orderdb.query(ordermenusquery.queryOrderMenu(id));
       // console.log('Found : ', orderFound.rows);
       const status = (orderFound.rows.length === 0) ? 400 : 200;
       if (status === 200) {
+        orderFound.rows[0].menu = orderMenu.rows;
         this.response = new Response('Ok', status, '', orderFound.rows);
         // console.log(response, status);
       } else {
@@ -141,7 +153,3 @@ export default class OrderController {
     return this.response;
   }
 }
-// exports a function declared earlier
-// export {
-//   getOrderList, createOrder, getOrder, updateOrder, deleteOrder,
-// };
