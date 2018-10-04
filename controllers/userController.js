@@ -1,26 +1,31 @@
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import User from '../models/users';
 import Response from '../models/response';
 import { jsonIsEmpty as validate } from '../utils/validate';
+import verifyjwt from '../utils/verifyJwt';
 import db from '../db/index';
 import orderquery from '../db/orders';
 import userquery from '../db/users';
 
-const roleId = 2;
-
-// const bcrypt = require('bcrypt');
-
 export default class UserController {
-  constructor(response, mapUserList) {
+  constructor(response) {
     this.response = response;
-    this.mapUserList = mapUserList;
   }
 
   // Display list of all Orders.
-  getUserList() {
-    const status = 200;
-    this.response = new Response('ok', status, '', this.mapUserList);
-    // res.status(status).send(response).end();
+  async getUserList(req) {
+    const token = verifyjwt(req.headers['x-access-token']);
+
+    if (token === 3) {
+      // console.log("result ",result);
+      const result = await db.query(userquery.queryAllUsers());
+      this.response = new Response('ok', 200, '', result.rows);
+    } else if (token === 2) {
+      this.response = new Response('ok', 401, 'You are not authorized to access this route', '');
+    } else {
+      this.response = new Response('ok', 400, 'Token verification failed', '');
+    }
     return this.response;
   }
 
@@ -31,22 +36,23 @@ export default class UserController {
 
     const user = await db.query(userquery.queryUser(email));
 
-    if (user.rowCount === 1){
+    if (user.rowCount === 1) {
       const isSame = await bcrypt.compare(password, user.rows[0].password);
       // console.log('isSame ? :', isSame);
       const userObj = user.rows[0];
 
-      if(isSame){
+      if (isSame) {
         delete userObj.password;
         delete userObj.dateCreated;
-        this.response = new Response('ok', 200, 'User has successfully logged in', userObj);
-      }else{
+        // jwt
+        const token = jwt.sign(userObj, 'test', { expiresIn: 86400 });
+
+        this.response = new Response('ok', 200, 'User has successfully logged in', token);
+      } else {
         this.response = new Response('ok', 401, 'Credentials are incorrect', email);
       }
-    }else{
-
+    } else {
       this.response = new Response('ok', 400, 'User doesnt exists, consider registering', email);
-
     }
 
     return this.response;
@@ -58,6 +64,7 @@ export default class UserController {
     const {
       email, phoneNo, fullName, password,
     } = req.body;
+    const roleId = 2;
 
     const hashedPassword = bcrypt.hashSync(password, 10);
 
@@ -69,17 +76,16 @@ export default class UserController {
 
     // Populate List in Memory if object is not empty
     if (!(validate(newUser)) && status === 201) {
-      const success = await db.query(
+      await db.query(
         userquery.createUser(
           newUser.email, newUser.fullName,
           newUser.phoneNo, newUser.password,
           newUser.dateCreated, newUser.roleId,
         ),
       );
-      if (success.rowCount === 1) {
-        delete newUser.password;
-        this.response = new Response('ok', status, 'New user Created', newUser);
-      }
+
+      delete newUser.password;
+      this.response = new Response('ok', status, 'New user Created', newUser);
     } else {
       delete newUser.password;
       this.response = new Response('ok', status, 'User Already Exists, Consider Logging In', newUser);
@@ -88,77 +94,102 @@ export default class UserController {
   }
 
   // Get single User by email
-  getUser(req) {
-    const { email } = req.params;
-    // console.log('parameter : ', email);
-    const userFound = this.mapUserList.get(email);
-    // console.log('Found : ', userFound);
-    const status = (userFound === undefined) ? 400 : 200;
+  async getUser(req) {
+    const token = verifyjwt(req.headers['x-access-token']);
 
-    if (status === 400) {
-      this.response = new Response('ok', status, 'User Doesnt Exist', '');
+    if (token === 3) {
+      const { email } = req.params;
+      // console.log('parameter : ', email);
+      const userFound = await db.query(userquery.queryUser(email));
+      // console.log('Found : ', userFound);
+      const status = (userFound.rowCount === 0) ? 400 : 200;
+
+      if (status === 400) {
+        this.response = new Response('ok', status, 'User Doesnt Exist', '');
+      } else {
+        this.response = new Response('ok', status, '', userFound.rows[0]);
+      }
+    } else if (token === 2) {
+      this.response = new Response('ok', 401, 'You are not authorized to access this route', '');
     } else {
-      this.response = new Response('ok', status, '', userFound);
+      this.response = new Response('ok', 400, 'Token verification failed', '');
     }
+
     // res.status(status).send(response).end();
     return this.response;
   }
 
   // Get single User Order by email
   async getUserOrders(req) {
-    const { email } = req.params;
-    // console.log('parameter : ', email);
-    const orders = await db.query(orderquery.userOrder(email));
-    // console.log('Found : ', orders);
-    const status = (orders.rowCount === 0) ? 400 : 200;
+    const token = verifyjwt(req.headers['x-access-token']);
 
-    if (status === 400) {
-      this.response = new Response('ok', status, 'There are no previous orders for user', '');
+    if (token === 3) {
+      const { email } = req.params;
+      // console.log('parameter : ', email);
+      const orders = await db.query(orderquery.userOrder(email));
+      // console.log('Found : ', orders);
+      const status = (orders.rowCount === 0) ? 400 : 200;
+
+      if (status === 400) {
+        this.response = new Response('ok', status, 'There are no previous orders for user', '');
+      } else {
+        this.response = new Response('ok', status, '', orders.rows);
+      }
+    } else if (token === 2) {
+      this.response = new Response('ok', 401, 'You are not authorized to access this route', '');
     } else {
-      this.response = new Response('ok', status, '', orders.rows);
+      this.response = new Response('ok', 400, 'Token verification failed', '');
     }
     return this.response;
   }
 
   // Update User by email
-  updateUser(req) {
-    const { email } = req.params;
-    // Get params in body
-    const { phoneNo } = req.body;
-    const { fullName } = req.body;
-    const { password } = req.body;
+  async updateUser(req) {
+    const token = verifyjwt(req.headers['x-access-token']);
 
-    const updatedData = new User(email, fullName,
-      phoneNo, password);
-    // console.log(email)
-    const userFound = this.mapUserList.get(email);
-    const status = (userFound === undefined) ? 400 : 200;
-    // console.log(status)
-    // Set user
-    if (status === 200) {
-      // userFound = updatedData;
-      // userFound.phoneNo = (phoneNo === undefined) ? userFound.phoneNo : phoneNo;
-      // userFound.fullName = (fullName === undefined) ? userFound.fullName : fullName;
-      // userFound.password = (password === undefined) ? userFound.password : password;
-      this.mapUserList.set(updatedData.email, updatedData);
+    if (token === 3) {
+      const { email } = req.params;
+      // Get params in body
+      const { roleId } = req.body;
+      const userFound = await db.query(userquery.updateUser(email, roleId));
+      const status = (userFound.rowCount === 0) ? 400 : 200;
 
-      this.response = new Response('ok', status, 'User Updated', updatedData);
+      // console.log(status)
+      if (status === 200) {
+        this.response = new Response('ok', status, 'User Role Successfully updated', email);
+      } else {
+        this.response = new Response('ok', status, 'User Doesnt exist', email);
+      }
+    } else if (token === 2) {
+      this.response = new Response('ok', 401, 'You are not authorized to access this route', '');
     } else {
-      this.response = new Response('ok', status, 'User Update failed', updatedData);
+      this.response = new Response('ok', 400, 'Token verification failed', '');
     }
+
     return this.response;
   }
 
   // delete User by email
-  deleteUser(req) {
-    const { email } = req.params;
-    // get email
-    const status = (this.mapUserList.delete(email)) ? 202 : 400;
-    // res.status(status).end();
-    return status;
+  async deleteUser(req) {
+    const token = verifyjwt(req.headers['x-access-token']);
+
+    if (token === 3) {
+      const { email } = req.params;
+
+      const result = await db.query(userquery.deleteUser(email));
+
+      const status = (result.rowCount === 0) ? 400 : 202;
+      // console.log("status", status);
+      if (status === 202) {
+        this.response = new Response('ok', status, 'User successsfully deleted', email);
+      } else {
+        this.response = new Response('ok', status, 'User Doesnt exist', email);
+      }
+    } else if (token === 2) {
+      this.response = new Response('ok', 401, 'You are not authorized to access this route', '');
+    } else {
+      this.response = new Response('ok', 400, 'Token verification failed', '');
+    }
+    return this.response;
   }
 }
-// exports a function declared earlier
-// export {
-//   getUserList, createUser, getUser, updateUser, deleteUser,
-// };

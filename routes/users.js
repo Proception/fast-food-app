@@ -1,36 +1,27 @@
 // Require controller modules.
 import UserController from '../controllers/userController';
-import User from '../models/users';
 
 const express = require('express');
 
 const router = express.Router();
-// console.log('order router');
-
-const user = new User('omasan.esimaje@gmail.com', 'Omasan Esimaje', '2347062257273', 'qwerty');
-const user1 = new User('benedict.esimaje@gmail.com', 'Benedict Esimaje', '2347062257274', 'asdfg');
-const user2 = new User('kene.esimaje@gmail.com', 'Kene Esimaje', '2347062257275', 'zxcvb');
 
 let response;
 
-const mapUserList = new Map([[user.email, user], [user1.email, user1],
-  [user2.email, user2]]);
-
-const users = new UserController(response, mapUserList);
+const users = new UserController(response);
 
 
 // GET request for returning all Users
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   // console.log("Without : ", users.getUserList(req, res));
-  const resObj = users.getUserList();
+  const resObj = await users.getUserList(req, res);
   // console.log(resObj);
   res.status(resObj.code).json(resObj);
 });
 
 // GET request for returning user based on email
-router.get('/:email', (req, res) => {
+router.get('/:email', async (req, res) => {
   // console.log("Without : ", users.getUser(req, res));
-  const resObj = users.getUser(req, res);
+  const resObj = await users.getUser(req, res);
   // console.log(resObj);
   res.status(resObj.code).json(resObj);
 });
@@ -52,19 +43,19 @@ router.get('/:email/orders', async (req, res) => {
 // });
 
 // PUT request for updating a single user
-router.put('/:email', (req, res) => {
+router.put('/:email', async (req, res) => {
   // console.log("Without : ", users.updateUser(req, res));
-  const resObj = users.updateUser(req, res);
+  const resObj = await users.updateUser(req, res);
   // console.log(resObj);
   res.status(resObj.code).json(resObj);
 });
 
 // DELETE request to Delete user by email
-router.delete('/:email', (req, res) => {
+router.delete('/:email', async (req, res) => {
   // console.log("Without : ", users.deleteUser(req, res));
-  const status = users.deleteUser(req, res);
+  const resObj = await users.deleteUser(req, res);
   // console.log(resObj);
-  res.status(status).json();
+  res.status(resObj.code).json(resObj);
 });
 
 export default router;

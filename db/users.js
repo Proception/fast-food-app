@@ -3,7 +3,7 @@ module.exports = {
     const query = {
       // give the query a unique name
       name: 'fetch-users',
-      text: 'SELECT * FROM public.users',
+      text: 'SELECT email, full_name, phone_no, role_id FROM public.users',
     };
     return query;
   },
