@@ -114,7 +114,7 @@ describe('Test Suite GET /users', () => {
       });
   });
   it('gets a user based on Email', (done) => {
-    request.get('/api/v1/users/omasan.esimaje@gmail.com')
+    request.get('/api/v1/users/1')
       .set('x-access-token', globaltoken)
       .expect(200)
       .end((err) => {
@@ -122,7 +122,7 @@ describe('Test Suite GET /users', () => {
       });
   });
   it('gets a users orders based on Email with token', (done) => {
-    request.get('/api/v1/users/omasan.esimaje@gmail.com/orders')
+    request.get('/api/v1/users/1/orders')
       .set('x-access-token', globaltoken)
       .expect(200)
       .end((err) => {
@@ -130,14 +130,14 @@ describe('Test Suite GET /users', () => {
       });
   });
   it('gets a users orders based on Email without token', (done) => {
-    request.get('/api/v1/users/omasan.esimaje@gmail.com/orders')
+    request.get('/api/v1/users/1/orders')
       .expect(400)
       .end((err) => {
         done(err);
       });
   });
   it('gets a users orders based on Email with invalid token', (done) => {
-    request.get('/api/v1/users/omasan.esimaje@gmail.com/orders')
+    request.get('/api/v1/users/1/orders')
       .set('x-access-token', 'kdfjdfdkjfjdfdfdkjdkj')
       .expect(401)
       .end((err) => {
@@ -145,7 +145,7 @@ describe('Test Suite GET /users', () => {
       });
   });
   it('gets a users orders based on Email (User orders doesnt exist)', (done) => {
-    request.get('/api/v1/users/omaje@gmail.com/orders')
+    request.get('/api/v1/users/90/orders')
       .set('x-access-token', globaltoken)
       .expect(400)
       .end((err) => {
@@ -153,14 +153,14 @@ describe('Test Suite GET /users', () => {
       });
   });
   it('gets a user based on Email without token', (done) => {
-    request.get('/api/v1/users/omasan.esimaje@gmail.com')
+    request.get('/api/v1/users/1')
       .expect(400)
       .end((err) => {
         done(err);
       });
   });
   it('gets a user based on Email with invalid token', (done) => {
-    request.get('/api/v1/users/omasan.esimaje@gmail.com')
+    request.get('/api/v1/users/1')
       .set('x-access-token', 'skdfskjkdfksjdfjksfdkj')
       .expect(401)
       .end((err) => {
@@ -168,15 +168,15 @@ describe('Test Suite GET /users', () => {
       });
   });
   it('gets a user based on Email(users doesn exist)', (done) => {
-    request.get('/api/v1/users/omasan.esimaje@gmail.ccc')
+    request.get('/api/v1/users/40')
       .set('x-access-token', globaltoken)
       .expect(400)
       .end((err) => {
         done(err);
       });
   });
-  it('gets a users orders based on Email', (done) => {
-    request.get('/api/v1/users/omasan.esimaje@gmail.com/orders')
+  it('gets a users orders based on id', (done) => {
+    request.get('/api/v1/users/1/orders')
       .set('x-access-token', globaltoken)
       .expect(200)
       .end((err) => {
@@ -184,7 +184,7 @@ describe('Test Suite GET /users', () => {
       });
   });
   it('gets a users orders based on Email(users do not exist)', (done) => {
-    request.get('/api/v1/users/omasan.esimaje@gmail.ccc/orders')
+    request.get('/api/v1/users/54/orders')
       .set('x-access-token', globaltoken)
       .expect(400)
       .end((err) => {
@@ -197,7 +197,7 @@ describe('Test Suite GET /users', () => {
 // Testing the Update a single user based on email expecting status 201 of success
 describe('Test Suite PUT /users', () => {
   it('Updates roleId of an existing user', (done) => {
-    request.put('/api/v1/users/omasan.esimaje@gmail.com')
+    request.put('/api/v1/users/1')
       .set('x-access-token', globaltoken)
       .send({
         roleId: 1,
@@ -208,7 +208,7 @@ describe('Test Suite PUT /users', () => {
       });
   });
   it('Updates details of a non existent user', (done) => {
-    request.put('/api/v1/users/omasan.esi@gma')
+    request.put('/api/v1/users/89')
       .set('x-access-token', globaltoken)
       .send({
         roleId: 2,
@@ -219,7 +219,7 @@ describe('Test Suite PUT /users', () => {
       });
   });
   it('Updates details of a non existent user without token', (done) => {
-    request.put('/api/v1/users/omasan.esi@gma')
+    request.put('/api/v1/users/90')
       .send({
         roleId: 2,
       })
@@ -229,7 +229,7 @@ describe('Test Suite PUT /users', () => {
       });
   });
   it('Updates details of a non existent user with invalid token', (done) => {
-    request.put('/api/v1/users/omasan.esi@gma')
+    request.put('/api/v1/users/87')
       .set('x-access-token', 'dfnsdfsmfndmsnfsmndf')
       .send({
         roleId: 2,
@@ -244,16 +244,16 @@ describe('Test Suite PUT /users', () => {
 
 // Testing the Delete a single user based on email expecting status 201 of success
 describe('Test Suite DELETE /users', () => {
-  it('Delete an existing user', (done) => {
-    request.delete('/api/v1/users/omasan.esimaje@gmail.com')
-      .set('x-access-token', globaltoken)
-      .expect(202)
-      .end((err) => {
-        done(err);
-      });
-  });
+  // it('Delete an existing user', (done) => {
+  //   request.delete('/api/v1/users/1')
+  //     .set('x-access-token', globaltoken)
+  //     .expect(202)
+  //     .end((err) => {
+  //       done(err);
+  //     });
+  // });
   it('Delete an existing user (User doesnt exist)', (done) => {
-    request.delete('/api/v1/users/omasan.esimaje@gmail.cm')
+    request.delete('/api/v1/users/76')
       .set('x-access-token', globaltoken)
       .expect(400)
       .end((err) => {
@@ -261,14 +261,14 @@ describe('Test Suite DELETE /users', () => {
       });
   });
   it('Delete an existing user (User doesnt exist) without token', (done) => {
-    request.delete('/api/v1/users/omasan.esimaje@gmail.cm')
+    request.delete('/api/v1/users/23')
       .expect(400)
       .end((err) => {
         done(err);
       });
   });
   it('Delete an existing user (User doesnt exist) with invalid token', (done) => {
-    request.delete('/api/v1/users/omasan.esimaje@gmail.cm')
+    request.delete('/api/v1/users/32')
       .set('x-access-token', 'dsmnnmfsmndfnmssmnfsmnf')
       .expect(401)
       .end((err) => {

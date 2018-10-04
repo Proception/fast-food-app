@@ -228,6 +228,9 @@ header a:hover{
 	background: url('../images/banner3.jpg') no-repeat 0;
 	text-align: center;
 	color: #ffffff;
+	background-repeat:no-repeat;
+	background-size:cover;
+	background-position:center;
 }
 
 #showcase h1 {
