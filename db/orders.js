@@ -1,4 +1,20 @@
 module.exports = {
+  queryDrop: () => {
+    const query = {
+      // give the query a unique name
+      name: 'drop-users',
+      text: 'DROP TABLE IF EXISTS public.users ;',
+    };
+    return query;
+  },
+  queryReset: () => {
+    const query = {
+      // give the query a unique name
+      name: 'reset-users',
+      text: 'CREATE TABLE public.users(id SERIAL NOT NULL,email character varying(100) COLLATE pg_catalog."default" NOT NULL,full_name character varying(50) COLLATE pg_catalog."default",phone_no bigint,password character varying(100) COLLATE pg_catalog."default",date_created date,role_id integer,CONSTRAINT users_pkey PRIMARY KEY (id),CONSTRAINT email UNIQUE (email)) WITH (OIDS =FALSE) TABLESPACE pg_default;',
+    };
+    return query;
+  },
   queryAllOrders: () => {
     const query = {
       // give the query a unique name

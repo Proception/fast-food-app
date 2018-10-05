@@ -1,121 +1,201 @@
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import User from '../models/users';
+import checkrole from '../utils/checkrole';
 import Response from '../models/response';
 import { jsonIsEmpty as validate } from '../utils/validate';
-import userdb from '../db/index';
+import verifyjwt from '../utils/verifyJwt';
+import db from '../db/index';
 import orderquery from '../db/orders';
+import userquery from '../db/users';
 
 export default class UserController {
-  constructor(response, mapUserList) {
+  constructor(response) {
     this.response = response;
-    this.mapUserList = mapUserList;
   }
 
   // Display list of all Orders.
-  getUserList() {
-    const status = 200;
-    this.response = new Response('ok', status, '', this.mapUserList);
-    // res.status(status).send(response).end();
+  async getUserList(req) {
+    let token = verifyjwt(req.headers['x-access-token'], 'admin');
+    token =  checkrole(token);
+
+    if (token === 3) {
+      // console.log("result ",result);
+      const result = await db.query(userquery.queryAllUsers());
+      this.response = new Response('ok', 200, '', result.rows);
+    } else if (token === 2) {
+      this.response = new Response('ok', 401, 'You are not authorized to access this route', '');
+    } else {
+      this.response = new Response('ok', 400, 'Token verification failed', '');
+    }
+    return this.response;
+  }
+
+  async loginUser(req) {
+    const {
+      email, password,
+    } = req.body;
+
+    const user = await db.query(userquery.queryUser(email));
+
+    if (user.rowCount === 1) {
+      const isSame = await bcrypt.compare(password, user.rows[0].password);
+      // console.log('isSame ? :', isSame);
+      const userObj = user.rows[0];
+
+      if (isSame) {
+        delete userObj.password;
+        delete userObj.dateCreated;
+        // jwt
+        const token = jwt.sign(userObj, 'test', { expiresIn: 86400 });
+
+        this.response = new Response('ok', 200, 'User has successfully logged in', token);
+      } else {
+        this.response = new Response('ok', 401, 'Credentials are incorrect', email);
+      }
+    } else {
+      this.response = new Response('ok', 400, 'User doesn\'t exist, consider registering', email);
+    }
+
     return this.response;
   }
 
   // Create New User.
-  createUser(req) {
+  async createUser(req) {
     // Get POST params
     const {
       email, phoneNo, fullName, password,
     } = req.body;
+    const roleId = 200;
+
+    const hashedPassword = bcrypt.hashSync(password, 10);
 
     const newUser = new User(email, fullName,
-      phoneNo, password);
+      phoneNo, hashedPassword, new Date(), roleId);
 
-    const userFound = this.mapUserList.get(email);
-    const status = (userFound === undefined) ? 201 : 409;
+    const userFound = await db.query(userquery.queryUser(email));
+    const status = (userFound.rowCount === 1) ? 409 : 201;
 
     // Populate List in Memory if object is not empty
     if (!(validate(newUser)) && status === 201) {
-      this.mapUserList.set(newUser.email, newUser);
-      this.response = new Response('ok', status, 'New user Created', newUser);
+      await db.query(
+        userquery.createUser(
+          newUser.email, newUser.fullName,
+          newUser.phoneNo, newUser.password,
+          newUser.dateCreated, newUser.roleId,
+        ),
+      );
+
+      delete newUser.password;
+      const token = jwt.sign(JSON.parse(JSON.stringify(newUser)), 'test', { expiresIn: 86400 });
+      this.response = new Response('ok', status, 'New user Created', token);
     } else {
+      delete newUser.password;
       this.response = new Response('ok', status, 'User Already Exists, Consider Logging In', newUser);
     }
-    // res.status(status).send(response).end();
     return this.response;
   }
 
   // Get single User by email
-  getUser(req) {
-    const { email } = req.params;
-    // console.log('parameter : ', email);
-    const userFound = this.mapUserList.get(email);
-    // console.log('Found : ', userFound);
-    const status = (userFound === undefined) ? 400 : 200;
+  async getUser(req) {
+    let token = verifyjwt(req.headers['x-access-token'], 'admin');
+    token =  checkrole(token);
 
-    if (status === 400) {
-      this.response = new Response('ok', status, 'User Doesnt Exist', '');
+    if (token === 3) {
+      const { id } = req.params;
+      // console.log('parameter : ', email);
+      const userFound = await db.query(userquery.queryUserId(id));
+      // console.log('Found : ', userFound);
+      const status = (userFound.rowCount === 0) ? 400 : 200;
+
+      if (status === 400) {
+        this.response = new Response('ok', status, 'User Doesnt Exist', '');
+      } else {
+        this.response = new Response('ok', status, '', userFound.rows[0]);
+      }
+    } else if (token === 2) {
+      this.response = new Response('ok', 401, 'You are not authorized to access this route', '');
     } else {
-      this.response = new Response('ok', status, '', userFound);
+      this.response = new Response('ok', 400, 'Token verification failed', '');
     }
+
     // res.status(status).send(response).end();
     return this.response;
   }
 
   // Get single User Order by email
   async getUserOrders(req) {
-    const { email } = req.params;
-    // console.log('parameter : ', email);
-    const orders = await userdb.query(orderquery.userOrder(email));
-    // console.log('Found : ', orders);
-    const status = (orders.rowCount === 0) ? 400 : 200;
+    const token = verifyjwt(req.headers['x-access-token'], '');
 
-    if (status === 400) {
-      this.response = new Response('ok', status, 'There are no previous orders for user', '');
+    if (token === 3) {
+      const { id } = req.params;
+      // console.log('parameter : ', email);
+      const orders = await db.query(orderquery.userOrder(id));
+      // console.log('Found : ', orders);
+      const status = (orders.rowCount === 0) ? 400 : 200;
+
+      if (status === 400) {
+        this.response = new Response('ok', status, 'There are no previous orders for user', '');
+      } else {
+        this.response = new Response('ok', status, '', orders.rows);
+      }
+    } else if (token === 2) {
+      this.response = new Response('ok', 401, 'You are not authorized to access this route', '');
     } else {
-      this.response = new Response('ok', status, '', orders.rows);
+      this.response = new Response('ok', 400, 'Token verification failed', '');
     }
-    // res.status(status).send(response).end();
     return this.response;
   }
 
   // Update User by email
-  updateUser(req) {
-    const { email } = req.params;
-    // Get params in body
-    const { phoneNo } = req.body;
-    const { fullName } = req.body;
-    const { password } = req.body;
+  async updateUser(req) {
+    let token = verifyjwt(req.headers['x-access-token'], 'admin');
+    token =  checkrole(token);
 
-    const updatedData = new User(email, fullName,
-      phoneNo, password);
-    // console.log(email)
-    const userFound = this.mapUserList.get(email);
-    const status = (userFound === undefined) ? 400 : 200;
-    // console.log(status)
-    // Set user
-    if (status === 200) {
-      // userFound = updatedData;
-      // userFound.phoneNo = (phoneNo === undefined) ? userFound.phoneNo : phoneNo;
-      // userFound.fullName = (fullName === undefined) ? userFound.fullName : fullName;
-      // userFound.password = (password === undefined) ? userFound.password : password;
-      this.mapUserList.set(updatedData.email, updatedData);
+    if (token === 3) {
+      const { id } = req.params;
+      // Get params in body
+      const { roleId } = req.body;
+      const userFound = await db.query(userquery.updateUserId(id, roleId));
+      const status = (userFound.rowCount === 0) ? 400 : 200;
 
-      this.response = new Response('ok', status, 'User Updated', updatedData);
+      // console.log(status)
+      if (status === 200) {
+        this.response = new Response('ok', status, 'User Role Successfully updated', id);
+      } else {
+        this.response = new Response('ok', status, 'User Doesnt exist', id);
+      }
+    } else if (token === 2) {
+      this.response = new Response('ok', 401, 'You are not authorized to access this route', '');
     } else {
-      this.response = new Response('ok', status, 'User Update failed', updatedData);
+      this.response = new Response('ok', 400, 'Token verification failed', '');
     }
-    // res.status(status).send(response).end();
+
     return this.response;
   }
 
   // delete User by email
-  deleteUser(req) {
-    const { email } = req.params;
-    // get email
-    const status = (this.mapUserList.delete(email)) ? 202 : 400;
-    // res.status(status).end();
-    return status;
+  async deleteUser(req) {
+    let token = verifyjwt(req.headers['x-access-token'], 'admin');
+    token =  checkrole(token);
+
+    if (token === 3) {
+      const { email } = req.params;
+
+      const result = await db.query(userquery.deleteUser(email));
+
+      const status = (result.rowCount === 0) ? 400 : 202;
+      // console.log("status", status);
+      if (status === 202) {
+        this.response = new Response('ok', status, 'User successsfully deleted', email);
+      } else {
+        this.response = new Response('ok', status, 'User Doesnt exist', email);
+      }
+    } else if (token === 2) {
+      this.response = new Response('ok', 401, 'You are not authorized to access this route', '');
+    } else {
+      this.response = new Response('ok', 400, 'Token verification failed', '');
+    }
+    return this.response;
   }
 }
-// exports a function declared earlier
-// export {
-//   getUserList, createUser, getUser, updateUser, deleteUser,
-// };

@@ -22,6 +22,7 @@ input {
   	-moz-border-radius: 28;
   	border-radius: 28px;
   	padding: 3px;
+  	padding-left: 17px;
 }
 
 textarea {
@@ -29,6 +30,12 @@ textarea {
   	-moz-border-radius: 28;
   	border-radius: 28px;
   	padding-left: 20px;
+  	height: 100px;
+  	width: 60%;
+}
+
+a{
+	color: #F34B27;
 }
 
 
@@ -114,6 +121,7 @@ textarea {
 
 input[type=file]::-webkit-file-upload-button {
   border: 1px solid grey;
+  /*text-align: left;*/
   /*background: #FFFAAA;*/
 }
 
@@ -228,6 +236,9 @@ header a:hover{
 	background: url('../images/banner3.jpg') no-repeat 0;
 	text-align: center;
 	color: #ffffff;
+	background-repeat:no-repeat;
+	background-size:cover;
+	background-position:center;
 }
 
 #showcase h1 {
@@ -287,9 +298,6 @@ footer {
   padding: 30px;
   text-align: center;
   width: 50%;
-  /*height: 300px;*/
-  /*box-shadow: 5px 10px #F34B27;*/
-  /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1), 0 4px 8px 0 rgba(0, 0, 0, 0.10);
 }
 
@@ -322,6 +330,12 @@ footer {
 	width: 60%;
 }
 
+/*.register .reg-control textarea{
+	height: 100px;
+	padding: 30px;
+	width: 60%;
+}
+*/
 .register input[type="button"]{
 	height: 35px;
 	background: #F34B27;
@@ -371,26 +385,36 @@ footer {
 	width: 90%;
 	border: 1px solid #5a6872;
 	padding: 10px;
-	margin: 3px;
+	margin: 30px;
 }
 
 
 /* pending orders */
 .order .container .new-order {
 	/*border: 1px solid #5a6872;*/
+	/*border: 1px solid;*/
 	width: 90%;
 	margin: 5px;
 	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1), 0 4px 8px 0 rgba(0, 0, 0, 0.10);
 	
 }
 
+.new-order {
+	width: 100%;
+    padding: 10px;
+    display: inline-block;
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1), 0 4px 8px 0 rgba(0, 0, 0, 0.10);
+}
+
 .new-order .order-details {
+	    /*border: 1px solid;*/
 	float: left;
 	width: 65%;
 	padding: 10px;
 	margin: 3px;
 }
 .new-order .order-commands {
+	/*border: 1px solid;*/
 	float: right;
 	width: 20%;
 	padding: 10px;
@@ -511,6 +535,63 @@ footer {
 
 
 /*media queries*/
+@media only screen  and (min-width : 1824px) {
+	.main-container{
+		/*Footer*/
+		min-height: 100vh; /* will cover the 100% of viewport */
+	 	overflow: hidden;
+	 	display: block;
+	 	position: relative;
+		padding-bottom: 40px;
+	}
+
+	/* Showcase */
+	#showcase {
+		min-height: 900px;
+		/*background: url('../images/banner3.jpg') no-repeat 0;*/
+		text-align: center;
+		color: #ffffff;
+		background-repeat:no-repeat;
+		background-size:cover;
+		background-position:center;
+	}
+	#showcase h1 {
+		margin-top: 200px;
+		font-size: 80px;
+		margin-bottom: 10px;
+		font-family: cursive;
+	}
+	.button_1 {
+		height: 100px;
+		/*background: #3d70b2;*/
+		background: #F34B27;
+		color:#ffffff;
+		border: 0;
+		padding-right: 105px;
+		padding-left: 105px;
+		cursor: pointer;
+		-webkit-border-radius: 28;
+	  	-moz-border-radius: 28;
+	  	border-radius: 48px;
+	  	font-weight: bold;
+	  	font-family: sans-serif;
+	  	font-size: 20px;
+
+
+	}
+	.button_1:hover {
+		background-color: #ffffff;
+		/*border: 2px solid  #3d70b2;*/
+		/*border: 2px solid #F34B27;*/
+		border: 2px solid #5a6872;
+		color: #F34B27;
+		font-family: cursive;
+		font-weight: bold;
+	}
+}
+
+
+
 @media(max-width: 768px){
 	header #brand-logo, header nav, header nav li, #specials .box{
 		float: none;

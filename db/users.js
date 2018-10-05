@@ -3,7 +3,7 @@ module.exports = {
     const query = {
       // give the query a unique name
       name: 'fetch-users',
-      text: 'SELECT * FROM public.users',
+      text: 'SELECT email, full_name, phone_no, role_id FROM public.users',
     };
     return query;
   },
@@ -16,6 +16,15 @@ module.exports = {
     };
     return query;
   },
+  queryUserId: (id) => {
+    const query = {
+      // give the query a unique name
+      name: 'fetch-single-user-Id',
+      text: 'SELECT * FROM public.users WHERE id = $1',
+      values: [id],
+    };
+    return query;
+  },
   updateUser: (email, roleId) => {
     const query = {
       // give the query a unique name
@@ -25,12 +34,30 @@ module.exports = {
     };
     return query;
   },
+  updateUserId: (id, roleId) => {
+    const query = {
+      // give the query a unique name
+      name: 'update-user-id',
+      text: 'UPDATE public.users SET role_id = $1 WHERE id = $2',
+      values: [roleId, id],
+    };
+    return query;
+  },
   deleteUser: (email) => {
     const query = {
       // give the query a unique name
       name: 'delete-user',
       text: 'DELETE from public.users WHERE email = $1',
       values: [email],
+    };
+    return query;
+  },
+  deleteUserId: (id) => {
+    const query = {
+      // give the query a unique name
+      name: 'delete-user-id',
+      text: 'DELETE from public.users WHERE id = $1',
+      values: [id],
     };
     return query;
   },
