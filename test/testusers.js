@@ -200,7 +200,7 @@ describe('Test Suite PUT /users', () => {
     request.put('/api/v1/users/1')
       .set('x-access-token', globaltoken)
       .send({
-        roleId: 1,
+        roleId: 100,
       })
       .expect(200)
       .end((err) => {
@@ -211,7 +211,7 @@ describe('Test Suite PUT /users', () => {
     request.put('/api/v1/users/89')
       .set('x-access-token', globaltoken)
       .send({
-        roleId: 2,
+        roleId: 100,
       })
       .expect(400)
       .end((err) => {
@@ -221,7 +221,7 @@ describe('Test Suite PUT /users', () => {
   it('Updates details of a non existent user without token', (done) => {
     request.put('/api/v1/users/90')
       .send({
-        roleId: 2,
+        roleId: 100,
       })
       .expect(400)
       .end((err) => {
@@ -232,7 +232,7 @@ describe('Test Suite PUT /users', () => {
     request.put('/api/v1/users/87')
       .set('x-access-token', 'dfnsdfsmfndmsnfsmndf')
       .send({
-        roleId: 2,
+        roleId: 100,
       })
       .expect(401)
       .end((err) => {
