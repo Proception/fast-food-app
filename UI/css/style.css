@@ -534,6 +534,37 @@ footer {
 }
 
 
+/*Pagination*/
+.pagination {
+    display: inline-block;
+}
+
+.header .pagination {
+
+}
+
+.pagination a {
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+	background-color: #ffffff;
+    color: #F34B27;
+    font-family: sans-serif;
+    border: 1px solid #F34B27;
+}
+
+.pagination a.active {
+	background-color: #F34B27;
+	color: #ffffff;
+}
+
+.pagination a:hover:not(.active) {
+	background-color: #F34B27;
+	color: #ffffff;
+}
+
+
 /*media queries*/
 @media only screen  and (min-width : 1824px) {
 	.main-container{

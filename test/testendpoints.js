@@ -54,7 +54,7 @@ before('Setup DB', async () => {
       .end((err, res) => {
         const token = JSON.parse(res.text);
 
-        globaltoken = token.result;
+        globaltoken = token.data;
         done(err);
       });
   });
