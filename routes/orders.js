@@ -12,9 +12,8 @@ const orders = new OrderController(response);
 
 // GET request for returning all orders
 router.get('/', async (req, res) => {
-  // console.log('query',query);
+  // console.log('incoming Request : ',res);
   const resObj = await orders.getOrderList(req, res);
-
   res.status(resObj.code).json(resObj);
 });
 

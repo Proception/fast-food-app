@@ -11,7 +11,13 @@ const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
+// Add headers
+app.use((req, res, next) => {
+    // Add access control header to responses
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', 'x-access-token, content-type');
+    next();
+});
 
 app.use('/api/v1/orders', ordersRouter);
 app.use('/api/v1/users', validateuser, usersRouter);

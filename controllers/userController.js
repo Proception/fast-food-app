@@ -36,6 +36,10 @@ export default class UserController {
       email, password,
     } = req.body;
 
+    console.log('req body : ', req.body);
+
+    console.log('email : ', email, ' password : ', password);
+
     const user = await db.query(userquery.queryUser(email));
 
     if (user.rowCount === 1) {
@@ -45,7 +49,9 @@ export default class UserController {
 
       if (isSame) {
         delete userObj.password;
-        delete userObj.dateCreated;
+        delete userObj.date_created;
+        delete userObj.phone_no;
+        delete userObj.email;
         // jwt
         const token = jwt.sign(userObj, 'test', { expiresIn: 86400 });
 
@@ -87,7 +93,21 @@ export default class UserController {
       );
 
       delete newUser.password;
-      const token = jwt.sign(JSON.parse(JSON.stringify(newUser)), 'test', { expiresIn: 86400 });
+
+      const userDB = await db.query(userquery.queryUser(newUser.email));
+      const userObj = userDB.rows[0];
+
+      //delete sensitive data
+      delete userObj.password;
+      delete userObj.date_created;
+      delete userObj.phone_no;
+      delete userObj.email;
+      let token;
+
+      if (userDB.rowCount === 1){
+        token = jwt.sign(userObj, 'test', { expiresIn: 86400 });
+      }
+
       this.response = new Response('ok', status, 'New user Created', token);
     } else {
       delete newUser.password;
