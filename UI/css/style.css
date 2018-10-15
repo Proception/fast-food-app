@@ -230,6 +230,17 @@ header a:hover{
   	/*background: #000;*/
   }
 
+.user a span, .user a {
+	color: #ffffff;
+	text-decoration: none;
+	text-transform: capitalize;
+	font-size: 14px;
+	font-weight: bold;
+	font-family: sans-serif;
+	background-color: #5a6872;
+	/*cursor: none;*/
+}
+
 /* Showcase */
 #showcase {
 	min-height: 600px;

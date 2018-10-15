@@ -43,7 +43,7 @@
 					<h1>Enter Login Details</h1>
 						<div class="login">
 							<div id="notif"></div>
-							<form novalidate>
+							<form id="loginForm" novalidate>
 								<p><input placeholder="Email" value="" type="email" name="email" ></p>
 								<p><input placeholder="Password" value="" type="password" name="pass"></p>
 								<p><input id="login" class="button" type="button" name="" value="Login" ></p>
@@ -58,6 +58,10 @@
 					<p>Fast Food Fast Copyright &copy; 2018</p>
 				</footer>
 		</div>
-		<script type="text/javascript" src="./js/login.js"></script>
+
+	<script src="./js/babel.min.js"></script>
+	<script data-plugins="transform-es2015-modules-umd" type="text/babel" src="./js/consumer.js"></script>
+	<script data-plugins="transform-es2015-modules-umd" type="text/babel" src="./js/decodejwt.js"></script>
+	<script data-plugins="transform-es2015-modules-umd" type="text/babel" src="./js/login.js"></script>
 	</body>
 </html>
