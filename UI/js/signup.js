@@ -1,4 +1,9 @@
 /* global document, window */
+import Consumer from 'consumer';
+import Decodejwt from 'decodejwt';
+
+const consumerObj = new Consumer('http://127.0.0.1:3012/api/v1/auth/signup');
+const tokenData = new Decodejwt(localStorage.getItem('token'));
 
 const signupform = {
   signupform: [],
@@ -52,6 +57,42 @@ const signupform = {
     const valid = (pass === cpass);
     return valid;
   },
+  async submit() {
+    const form = document.getElementById('signupForm');
+    const formData = new FormData(form);
+    const signupData = {
+      email: formData.get('email'),
+      fullName: formData.get('name'),
+      phoneNo: formData.get('pnumber'),
+      password: formData.get('pass'),
+    }
+
+    console.log('signupData : ', signupData);
+    const res = await consumerObj.addItem(signupData)
+    .then(response => response.json())
+    .then(response => {
+      console.log('Success:', JSON.stringify(response));
+      return response;
+    }).catch(error => {
+      // return error;
+      this.notif('warning', 'There was a problem, please try again');
+    });
+
+    console.log('res : ', res);
+    if (res !== undefined && res.data !== ''){
+      return res.data;
+    }
+
+  },
+  isLoggedIn() {
+    const currentTime = (new Date()).getTime() / 1000;
+
+    if(tokenData.getToken() !== null && tokenData.getExpTime() > currentTime) {
+      return true;
+    }else{
+      return false;
+    }
+  },
   notif(clas, message) {
     document.getElementById('notif').setAttribute('class', clas);
     document.getElementById('notif').innerHTML = '';
@@ -62,21 +103,26 @@ const signupform = {
 
 const signUphandlers = {
   handlers: [],
-  validate() {
+  async validate() {
     if (signupform.validate()) {
+      const token = await signupform.submit();
+      localStorage.setItem('token', token);
+
       signupform.notif('success', 'Registration Successful');
-      window.location.href = 'login.html';
+      window.location.href = 'index.html';
+    }
+  },
+  userStatus(){
+    if(signupform.isLoggedIn()){
+      window.location.href = 'index.html';
+      console.log('user token is active');
+    }else{
+      console.log('user token has expired or user is not logged in');
     }
   },
 };
 
-
-// const submitform = {
-//   submitform: [],
-//   host: '',
-//   port: '',
-//   endPoint: '',
-// };
+// signUphandlers.userStatus();
 
 const signupBtn = document.getElementById('signup');
 

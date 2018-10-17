@@ -92,11 +92,11 @@ const loginHandler = {
   },
 };
 
+loginHandler.userStatus();
+
 const loginBtn = document.getElementById('login');
 
 
 loginBtn.addEventListener('click', () => {
   loginHandler.validate();
 });
-
-loginHandler.userStatus();

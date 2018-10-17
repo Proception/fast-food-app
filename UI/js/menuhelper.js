@@ -49,6 +49,7 @@ const currentTime = (new Date()).getTime() / 1000;
 
 console.log('Token Expiry time ',tokenData.getExpTime());
 console.log('Current TIme ',currentTime);
+console.log('user ',tokenData.getId());
 
 if(tokenData.getToken() !== null && tokenData.getExpTime() > currentTime) {
 	handlers.hideLogoutMenus();
