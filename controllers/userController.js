@@ -36,10 +36,6 @@ export default class UserController {
       email, password,
     } = req.body;
 
-    console.log('req body : ', req.body);
-
-    console.log('email : ', email, ' password : ', password);
-
     const user = await db.query(userquery.queryUser(email));
 
     if (user.rowCount === 1) {

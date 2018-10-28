@@ -15,11 +15,10 @@ export default class Consumer {
     console.log("url", this.url);
 
     return fetch(this.url, {
+      method: "GET",
       mode: "cors",
       headers: this.headers,
-    }).then(response => response.json())
-    .then(response => console.log('Success:', JSON.stringify(response)))
-    .catch(error => console.error('Error:', error));
+    })
   }
 
   addItem(data) {
@@ -29,6 +28,14 @@ export default class Consumer {
       mode: "cors",
       headers: this.headers,
       body: JSON.stringify(data),
+    })
+  }
+  updateOrder(orderId, status){
+    return fetch(this.url + orderId, {
+      method: "PUT",
+      mode: "cors",
+      headers: this.headers,
+      body: JSON.stringify({'orderStatus' : status}),
     })
   }
 

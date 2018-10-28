@@ -112,6 +112,8 @@ export default class OrderController {
       const { id } = req.params;
       // Get params in body
       const { orderStatus } = req.body;
+      console.log(' orderStatus ', orderStatus);
+
       const orderFound = await orderdb.query(orderquery.queryOrder(id));
 
       const status = (orderFound.rowCount === 0) ? 400 : await orderdb.query(

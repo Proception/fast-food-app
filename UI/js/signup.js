@@ -80,14 +80,21 @@ const signupform = {
 
     console.log('res : ', res);
     if (res !== undefined && res.data !== ''){
-      return res.data;
+      if(res.code === 409){
+        this.notif('warning', res.messages);
+      }else if(res.code === 201){
+        return res.data;
+      }else{
+        this.notif('warning', res.messages);
+      }
+      
     }
 
   },
   isLoggedIn() {
     const currentTime = (new Date()).getTime() / 1000;
 
-    if(tokenData.getToken() !== null && tokenData.getExpTime() > currentTime) {
+    if(tokenData.token !== "undefined" && tokenData.getToken() !== null && tokenData.getExpTime() > currentTime) {
       return true;
     }else{
       return false;
@@ -106,10 +113,13 @@ const signUphandlers = {
   async validate() {
     if (signupform.validate()) {
       const token = await signupform.submit();
-      localStorage.setItem('token', token);
 
-      signupform.notif('success', 'Registration Successful');
-      window.location.href = 'index.html';
+      console.log('Token : ', token);
+      if(token !== undefined){
+        localStorage.setItem('token', token);
+        signupform.notif('success', 'Registration Successful');
+        window.location.href = 'index.html';
+      }
     }
   },
   userStatus(){
@@ -122,7 +132,7 @@ const signUphandlers = {
   },
 };
 
-// signUphandlers.userStatus();
+signUphandlers.userStatus();
 
 const signupBtn = document.getElementById('signup');
 

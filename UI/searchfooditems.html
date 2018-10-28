@@ -21,17 +21,18 @@
 							<!-- <li><a href="">Admin</a></li> -->
 							<li><a href="restaurantmenu.html">Menu</a></li>
 							<!-- <li><a href="">About us</a></li> -->
-							<li><a href="checkout.html">Check Out</a></li>
-						    <li><a href="#">My Account</a>
+							<li class="on-login"><a href="checkout.html">Check Out</a></li>
+						    <li class="on-login"><a href="#">My Account</a>
 						      <ul class="dropdown">
-						        <li><a href="orders.html">View Pending Orders</a></li>
+						        <li class="admin"><a href="orders.html">View Pending Orders</a></li>
 						        <li><a href="orderhistory.html">View Order History</a></li>
-						        <li><a href="searchfooditems.html">Search Food Items</a></li>
-						        <li><a href="addfooditem.html">Add Food Items</a></li>
+						        <li class="admin"><a href="searchfooditems.html">Search Food Items</a></li>
+						        <li class="admin"><a href="addfooditem.html">Add Food Items</a></li>
 						      </ul>
 						    </li>
-							<li><a href="login.html">Login</a></li>
-							<li><a href="signup.html">Signup</a></li>
+							<li class="on-logout"><a href="login.html">Login</a></li>
+							<li class="on-logout"><a href="signup.html">Signup</a></li>
+							<li class="on-login user"><a><span>Hi, Guest</span></a></li>
 						</ul>
 					</nav>
 				</div>
@@ -132,5 +133,6 @@
 	<script src="./js/babel.min.js"></script>
 	<script data-plugins="transform-es2015-modules-umd" type="text/babel" src="./js/consumer.js"></script>
 	<script data-plugins="transform-es2015-modules-umd" type="text/babel" src="./js/decodejwt.js"></script>
+	<script data-plugins="transform-es2015-modules-umd" type="text/babel" src="./js/menuhelper.js"></script>
 	</body>
 </html>
