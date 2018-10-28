@@ -181,6 +181,6 @@ const handlers = {
         }
     },
 };
-handlers.isLoggedIn();
+// handlers.isLoggedIn();
 handlers.init();
 handlers.updateTotalAmount('\u20A6', myCart.getTotal());

@@ -53,7 +53,17 @@ const loginForm = {
 
     console.log('res : ', res);
     if (res !== undefined && res.data !== ''){
-      return res.data;
+      console.log('res', res);
+      if(res.code === 200){
+        console.log('Access Granted');
+        return res.data;
+      }else if (res.code === 401){
+        console.log('Unauthorized')
+        this.notif('warning', res.messages);
+      }else{
+        this.notif('warning', res.messages);
+      }
+      
     }
 
   },
@@ -65,7 +75,9 @@ const loginForm = {
   isLoggedIn() {
     const currentTime = (new Date()).getTime() / 1000;
 
-    if(tokenData.getToken() !== null && tokenData.getExpTime() > currentTime) {
+    console.log('token login : ', tokenData.token)
+
+    if(tokenData.token !== "undefined" && tokenData.getToken() !== null && tokenData.getExpTime() > currentTime) {
       return true;
     }else{
       return false;
@@ -78,8 +90,12 @@ const loginHandler = {
   async validate() {
     if (loginForm.validate()) {
       const token = await loginForm.submit();
+      console.log('Token :', token);
       localStorage.setItem('token', token);
-      window.location.href = 'index.html';
+      if(token !== undefined){
+        window.location.href = 'index.html';
+      }
+      // window.location.href = 'index.html';
     }
   },
   userStatus(){

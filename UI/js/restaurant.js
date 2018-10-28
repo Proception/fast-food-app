@@ -53,6 +53,12 @@ const handlers = {
 buttons.forEach((elem) => {
   elem.addEventListener('click', function () {
     const qty = document.getElementById(this.id).previousElementSibling.value;
-    handlers.add(Number(this.id), Number(qty));
+    
+    console.log('qty : ', qty);
+    if(qty !== undefined){
+      handlers.add(Number(this.id), Number(qty));
+    }else{
+      alert('Please Log in to add items to cart');
+    }
   });
 });
