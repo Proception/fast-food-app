@@ -17,6 +17,12 @@ router.get('/', async (req, res) => {
   res.status(resObj.code).json(resObj);
 });
 
+// GET request for returning all orders
+router.get('/user', async (req, res) => {
+  const resObj = await orders.getUserOrder(req, res);
+  res.status(resObj.code).json(resObj);
+});
+
 // GET request for returning order based on id
 router.get('/:id', async (req, res) => {
   // console.log("Without : ", orders.getOrder(req, res));
