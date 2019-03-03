@@ -1,5 +1,6 @@
 import uuid from 'uuid/v4';
 import Response from '../models/response';
+import getTokenData from '../utils/GetTokenData';
 import verifyjwt from '../utils/verifyJwt';
 import checkrole from '../utils/checkrole';
 import { jsonIsEmpty as validate } from '../utils/validate';
@@ -15,7 +16,7 @@ export default class OrderController {
 
   async getOrderList(req) {
     let token = verifyjwt(req.headers['x-access-token'], 'admin');
-    token =  checkrole(token);
+    token = checkrole(token);
 
     if (token === 3) {
       const status = 200;
@@ -23,6 +24,18 @@ export default class OrderController {
         .then(data => this.response = new Response('Ok', status, '', data.rows));
     } else if (token === 2) {
       this.response = new Response('ok', 401, 'You are not authorized to access this route', '');
+    } else {
+      this.response = new Response('ok', 400, 'Token verification failed', '');
+    }
+    return this.response;
+  }
+
+  async getUserOrder(req) {
+    const userData = getTokenData(req.headers['x-access-token']);
+    const { id, role_id } = userData;
+    if (id) {
+      await orderdb.query(orderquery.userOrder(id))
+        .then(data => this.response = new Response('Ok', 200, '', data.rows));
     } else {
       this.response = new Response('ok', 400, 'Token verification failed', '');
     }
