@@ -68,7 +68,7 @@ export default class UserController {
     const {
       email, phoneNo, fullName, password,
     } = req.body;
-    const roleId = 200;
+    const roleId = 100;
 
     const hashedPassword = bcrypt.hashSync(password, 10);
 
